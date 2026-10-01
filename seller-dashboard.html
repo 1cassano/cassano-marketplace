@@ -1,0 +1,7246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cassano Seller Dashboard</title>
+
+<style>
+
+:root {
+    --gold:#D4AF37;
+    --gold-light:#f3d77a;
+    --black:#050505;
+    --dark:#0c0c0c;
+    --dark2:#131313;
+    --card:#171717;
+    --border:rgba(212,175,55,.25);
+    --text:#fff;
+    --muted:#a5a5a5;
+    --danger:#e95c5c;
+    --success:#65d88a;
+    --warning:#e6b94f;
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html { scroll-behavior:smooth; }
+
+body {
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--black);
+    color:var(--text);
+    min-height:100vh;
+    transition:.3s ease;
+}
+
+button,input,select,textarea { font-family:inherit; }
+button { cursor:pointer; }
+a { text-decoration:none;color:inherit; }
+
+.sidebar {
+    position:fixed;
+    left:0;
+    top:0;
+    width:240px;
+    height:100vh;
+    background:var(--dark);
+    border-right:1px solid var(--border);
+    padding:25px 16px;
+    overflow-y:auto;
+    z-index:1000;
+    transition:.3s ease;
+}
+
+.logo-area {
+    text-align:center;
+    padding-bottom:22px;
+    margin-bottom:15px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.logo-area img {
+    width:58px;
+    height:58px;
+    object-fit:contain;
+    margin-bottom:8px;
+}
+
+.logo-area h2 {
+    color:var(--gold);
+    font-size:17px;
+    letter-spacing:2px;
+}
+
+.logo-area p {
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:1px;
+    margin-top:5px;
+}
+
+.sidebar-title {
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:2px;
+    margin:20px 11px 9px;
+}
+
+.side-link {
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 13px;
+    margin-bottom:5px;
+    border-radius:9px;
+    color:#cfcfcf;
+    font-size:13px;
+    border:none;
+    background:transparent;
+    text-align:left;
+    transition:.25s ease;
+}
+
+.side-link:hover {
+    color:var(--gold-light);
+    background:linear-gradient(90deg,rgba(212,175,55,.12),transparent);
+}
+
+.side-link.active {
+    color:var(--gold-light);
+    background:linear-gradient(90deg,rgba(212,175,55,.17),transparent);
+    border-left:2px solid var(--gold);
+}
+
+.side-icon {
+    width:22px;
+    text-align:center;
+    font-size:16px;
+}
+
+.logout-link { color:#d77878; }
+
+.main {
+    margin-left:240px;
+    min-height:100vh;
+}
+
+.header {
+    min-height:82px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 35px;
+    background:var(--black);
+    border-bottom:1px solid rgba(255,255,255,.07);
+    position:sticky;
+    top:0;
+    z-index:900;
+}
+
+.header-left h1 {
+    font-size:24px;
+    margin-bottom:5px;
+}
+
+.header-left p {
+    color:var(--muted);
+    font-size:12px;
+}
+
+.header-right {
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.header-business {
+    color:var(--gold-light);
+    font-size:12px;
+}
+
+.header-badge {
+    border:1px solid var(--border);
+    padding:8px 12px;
+    border-radius:20px;
+    font-size:10px;
+    color:var(--gold-light);
+}
+
+.content { padding:32px 35px 60px; }
+
+.seller-section {
+    display:none;
+    animation:fadeIn .25s ease;
+}
+
+.seller-section.active { display:block; }
+
+@keyframes fadeIn {
+    from { opacity:0;transform:translateY(5px); }
+    to { opacity:1;transform:translateY(0); }
+}
+
+.section-heading { margin-bottom:25px; }
+
+.section-heading h2 {
+    font-size:25px;
+    margin-bottom:7px;
+}
+
+.section-heading p {
+    color:var(--muted);
+    font-size:13px;
+}
+
+.card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    padding:23px;
+    transition:.25s ease;
+}
+
+.card h3 {
+    font-size:17px;
+    margin-bottom:7px;
+}
+
+.card-subtitle {
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:20px;
+}
+
+.grid-2 {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.grid-3 {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.grid-4 {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.btn {
+    border:none;
+    border-radius:9px;
+    padding:11px 15px;
+    font-size:12px;
+    transition:.2s ease;
+}
+
+.btn-gold {
+    background:var(--gold);
+    color:#000;
+    font-weight:bold;
+}
+
+.btn-gold:hover {
+    background:var(--gold-light);
+    transform:translateY(-1px);
+}
+
+.btn-dark {
+    background:#101010;
+    border:1px solid #303030;
+    color:#fff;
+}
+
+.btn-dark:hover { border-color:var(--gold); }
+
+.btn-danger {
+    background:rgba(220,70,70,.10);
+    border:1px solid rgba(220,70,70,.35);
+    color:#ff8585;
+}
+
+.btn-success {
+    background:rgba(70,190,110,.10);
+    border:1px solid rgba(70,190,110,.30);
+    color:#7be29a;
+}
+
+.btn-small {
+    padding:8px 10px;
+    font-size:10px;
+}
+
+.welcome-card {
+    background:linear-gradient(135deg,#171717,#0d0d0d);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:22px;
+}
+
+.welcome-small {
+    color:var(--gold-light);
+    font-size:11px;
+    letter-spacing:2px;
+    margin-bottom:10px;
+}
+
+.welcome-card h2 {
+    font-size:28px;
+    margin-bottom:9px;
+}
+
+.welcome-card p {
+    color:var(--muted);
+    font-size:13px;
+    max-width:700px;
+}
+
+.stats-grid {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.stat {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:20px;
+}
+
+.stat-label {
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:1px;
+    margin-bottom:10px;
+}
+
+.stat-value {
+    font-size:22px;
+    font-weight:bold;
+    color:var(--gold-light);
+}
+
+.stat-note {
+    color:var(--muted);
+    font-size:10px;
+    margin-top:7px;
+}
+
+.quick-actions {
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+}
+
+.quick-action {
+    background:var(--dark2);
+    border:1px solid rgba(212,175,55,.15);
+    border-radius:13px;
+    padding:17px;
+    text-align:left;
+    color:#fff;
+    transition:.25s ease;
+}
+
+.quick-action:hover {
+    border-color:var(--gold);
+    transform:translateY(-2px);
+}
+
+.quick-action-icon {
+    font-size:21px;
+    margin-bottom:9px;
+}
+
+.quick-action strong {
+    display:block;
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+.quick-action span {
+    color:var(--muted);
+    font-size:10px;
+}
+
+.toolbar {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.toolbar-left {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.search-input {
+    width:260px;
+    padding:11px 13px;
+    border-radius:9px;
+    background:#101010;
+    border:1px solid #303030;
+    color:#fff;
+    outline:none;
+}
+
+.product-grid {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:17px;
+}
+
+.product-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.product-card-image {
+    height:180px;
+    background:#101010;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+.product-card-image img {
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.product-card-body { padding:14px; }
+
+.product-card-body h3 {
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.product-card-body p {
+    color:var(--muted);
+    font-size:10px;
+    margin-bottom:8px;
+}
+
+.product-price {
+    color:var(--gold-light);
+    font-weight:bold;
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+.product-actions {
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.form-grid {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:17px;
+}
+
+.form-group { margin-bottom:17px; }
+
+.form-group.full { grid-column:1 / -1; }
+
+.form-group label {
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:.7px;
+    margin-bottom:7px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width:100%;
+    padding:12px 13px;
+    border-radius:9px;
+    border:1px solid #303030;
+    background:#101010;
+    color:#fff;
+    outline:none;
+    font-size:12px;
+}
+
+.form-group textarea {
+    min-height:105px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color:var(--gold);
+}
+
+.form-group select option {
+    background:#111;
+    color:#fff;
+}
+
+.form-actions {
+    display:flex;
+    gap:10px;
+    margin-top:5px;
+}
+
+.image-preview-grid {
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-top:10px;
+}
+
+.image-preview {
+    height:100px;
+    background:#101010;
+    border:1px solid #303030;
+    border-radius:9px;
+    overflow:hidden;
+}
+
+.image-preview img {
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.video-preview {
+    margin-top:10px;
+    max-width:350px;
+    border-radius:10px;
+}
+
+.table-wrapper { overflow-x:auto; }
+
+.data-table {
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+.data-table th,
+.data-table td {
+    padding:13px 10px;
+    text-align:left;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    font-size:11px;
+}
+
+.data-table th {
+    color:var(--muted);
+    font-weight:normal;
+    font-size:10px;
+    letter-spacing:.4px;
+}
+
+.data-table td { color:#ddd; }
+
+.status {
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:9px;
+}
+
+.status.new {
+    background:rgba(80,150,255,.12);
+    color:#7eb6ff;
+}
+
+.status.processing {
+    background:rgba(230,185,79,.12);
+    color:#eecb70;
+}
+
+.status.shipped {
+    background:rgba(140,100,230,.12);
+    color:#b89cff;
+}
+
+.status.delivered,
+.status.active {
+    background:rgba(70,190,110,.12);
+    color:#79df98;
+}
+
+.status.cancelled,
+.status.hidden {
+    background:rgba(220,70,70,.12);
+    color:#ff8383;
+}
+
+.status.returned {
+    background:rgba(220,120,70,.12);
+    color:#f0a274;
+}
+
+.order-tabs,
+.sales-tabs {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.order-tab,
+.sales-tab {
+    padding:9px 13px;
+    border-radius:20px;
+    border:1px solid #303030;
+    background:#101010;
+    color:#aaa;
+    font-size:10px;
+}
+
+.order-tab.active,
+.sales-tab.active {
+    color:#000;
+    background:var(--gold);
+    border-color:var(--gold);
+}
+
+.sales-stat-grid {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:22px;
+}
+
+.sales-number {
+    font-size:22px;
+    color:var(--gold-light);
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.chart {
+    height:250px;
+    display:flex;
+    align-items:flex-end;
+    gap:13px;
+    padding:20px 10px 0;
+    border-bottom:1px solid #303030;
+}
+
+.chart-bar-wrap {
+    height:100%;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    align-items:center;
+    gap:7px;
+}
+
+.chart-bar {
+    width:100%;
+    max-width:42px;
+    min-height:5px;
+    background:linear-gradient(to top,var(--gold),var(--gold-light));
+    border-radius:6px 6px 0 0;
+}
+
+.chart-label {
+    color:var(--muted);
+    font-size:9px;
+}
+
+.chat-layout {
+    display:grid;
+    grid-template-columns:280px 1fr;
+    gap:18px;
+    height:560px;
+}
+
+.buyers-list { overflow-y:auto; }
+
+.buyer {
+    padding:13px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+    cursor:pointer;
+}
+
+.buyer:hover,
+.buyer.active {
+    background:rgba(212,175,55,.08);
+}
+
+.buyer-name {
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+.buyer-message {
+    color:var(--muted);
+    font-size:10px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.chat-window {
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.chat-header {
+    padding-bottom:15px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    margin-bottom:15px;
+}
+
+.chat-header strong { font-size:14px; }
+
+.messages {
+    flex:1;
+    overflow-y:auto;
+    padding:10px;
+}
+
+.message {
+    max-width:70%;
+    padding:10px 12px;
+    border-radius:12px;
+    margin-bottom:9px;
+    font-size:11px;
+    line-height:1.5;
+}
+
+.message.buyer {
+    background:#202020;
+    border-bottom-left-radius:3px;
+}
+
+.message.seller {
+    background:rgba(212,175,55,.15);
+    border:1px solid rgba(212,175,55,.20);
+    margin-left:auto;
+    border-bottom-right-radius:3px;
+}
+
+.chat-input {
+    display:flex;
+    gap:8px;
+    padding-top:13px;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.chat-input input {
+    flex:1;
+    padding:12px;
+    border-radius:9px;
+    background:#101010;
+    border:1px solid #303030;
+    color:#fff;
+    outline:none;
+}
+
+.balance-card {
+    background:linear-gradient(135deg,#171717,#0d0d0d);
+    border:1px solid var(--border);
+    border-radius:19px;
+    padding:25px;
+    margin-bottom:20px;
+}
+
+.balance-label {
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:1px;
+    margin-bottom:8px;
+}
+
+.balance-amount {
+    color:var(--gold-light);
+    font-size:33px;
+    font-weight:bold;
+}
+
+.balance-note {
+    color:var(--muted);
+    font-size:10px;
+    margin-top:7px;
+}
+
+.withdraw-grid {
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:20px;
+}
+
+.payment-methods {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+}
+
+.payment-option {
+    padding:13px;
+    border-radius:10px;
+    border:1px solid #303030;
+    background:#101010;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.payment-option:hover { border-color:rgba(212,175,55,.55); }
+
+.payment-option.selected {
+    border-color:var(--gold);
+    background:rgba(212,175,55,.09);
+}
+
+.payment-option strong {
+    display:block;
+    font-size:11px;
+    margin-bottom:5px;
+}
+
+.payment-option span {
+    color:var(--muted);
+    font-size:9px;
+}
+
+.dynamic-box {
+    display:none;
+    margin-top:18px;
+    padding:17px;
+    border-radius:12px;
+    border:1px solid #292929;
+    background:#101010;
+}
+
+.dynamic-box.active { display:block; }
+
+.dynamic-title {
+    color:var(--gold-light);
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+.withdraw-history { margin-top:20px; }
+
+.profile-header {
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.profile-avatar {
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--gold),#8b6d12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#000;
+    font-size:27px;
+    font-weight:bold;
+    overflow:hidden;
+    position:relative;
+}
+
+.profile-avatar img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.profile-photo-actions {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:8px;
+}
+
+.setting-row {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:17px 0;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.setting-row:last-child { border-bottom:none; }
+
+.setting-info h4 {
+    font-size:13px;
+    margin-bottom:5px;
+}
+
+.setting-info p {
+    color:var(--muted);
+    font-size:10px;
+}
+
+.setting-row select {
+    min-width:190px;
+    padding:10px;
+    border-radius:8px;
+    background:#101010;
+    border:1px solid #303030;
+    color:#fff;
+    outline:none;
+}
+
+.agreement-box {
+    max-height:500px;
+    overflow-y:auto;
+    line-height:1.7;
+}
+
+.agreement-box h4 {
+    color:var(--gold-light);
+    font-size:13px;
+    margin:18px 0 7px;
+}
+
+.agreement-box p,
+.agreement-box li {
+    color:var(--muted);
+    font-size:11px;
+}
+
+.agreement-box ul {
+    padding-left:20px;
+}
+
+.agreement-accept {
+    margin-top:20px;
+    padding:17px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:rgba(212,175,55,.05);
+}
+
+.modal {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:3000;
+    padding:20px;
+}
+
+.modal.active { display:flex; }
+
+.modal-box {
+    width:100%;
+    max-width:700px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:#111;
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:25px;
+    position:relative;
+}
+
+.modal-close {
+    position:absolute;
+    right:15px;
+    top:15px;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    border:1px solid #303030;
+    background:#202020;
+    color:#fff;
+}
+
+.info-item {
+    padding:15px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.info-item:last-child { border-bottom:none; }
+
+.mini-stat {
+    padding:15px;
+    border-radius:11px;
+    background:var(--dark2);
+    border:1px solid rgba(212,175,55,.15);
+}
+
+.mini-stat strong {
+    display:block;
+    color:var(--gold-light);
+    font-size:18px;
+    margin-top:5px;
+}
+
+body.light {
+    --black:#f4f4f4;
+    --dark:#fff;
+    --dark2:#eee;
+    --card:#fff;
+    --text:#111;
+    --muted:#666;
+    background:#f4f4f4;
+    color:#111;
+}
+
+body.light .sidebar {
+    background:#fff;
+    border-right-color:rgba(0,0,0,.12);
+}
+
+body.light .header {
+    background:#f4f4f4;
+    border-bottom-color:rgba(0,0,0,.10);
+}
+
+body.light .side-link { color:#444; }
+
+body.light .side-link:hover,
+body.light .side-link.active { color:#111; }
+
+body.light .welcome-card,
+body.light .balance-card { background:#fff; }
+
+body.light .card,
+body.light .stat {
+    background:#fff;
+    border-color:#ddd;
+}
+
+body.light .quick-action {
+    background:#f7f7f7;
+    color:#111;
+    border-color:#ddd;
+}
+
+body.light .search-input,
+body.light .form-group input,
+body.light .form-group select,
+body.light .form-group textarea,
+body.light .setting-row select {
+    background:#fff;
+    color:#111;
+    border-color:#ccc;
+}
+
+body.light .form-group select option {
+    background:#fff;
+    color:#111;
+}
+
+body.light .btn-dark {
+    background:#eee;
+    color:#111;
+    border-color:#ccc;
+}
+
+body.light .product-card {
+    background:#fff;
+    border-color:#ddd;
+}
+
+body.light .product-card-image { background:#f5f5f5; }
+
+body.light .payment-option {
+    background:#fff;
+    border-color:#ccc;
+}
+
+body.light .dynamic-box {
+    background:#f7f7f7;
+    border-color:#ddd;
+}
+
+body.light .data-table th,
+body.light .data-table td {
+    border-bottom-color:#ddd;
+}
+
+body.light .buyer:hover,
+body.light .buyer.active {
+    background:rgba(212,175,55,.10);
+}
+
+body.light .message.buyer {
+    background:#eee;
+    color:#222;
+}
+
+body.light .chat-input input {
+    background:#fff;
+    color:#111;
+    border-color:#ccc;
+}
+
+body.light .setting-row { border-bottom-color:#ddd; }
+
+body.light .modal-box { background:#fff; }
+
+body.light .modal-close {
+    background:#eee;
+    color:#111;
+    border-color:#ccc;
+}
+
+body.light .mini-stat { background:#f5f5f5; }
+
+body.blue {
+    --black:#07111f;
+    --dark:#0a1626;
+    --dark2:#102033;
+    --card:#0d1b2a;
+    --border:rgba(212,175,55,.28);
+    --text:#fff;
+    --muted:#aab8c5;
+    background:#07111f;
+    color:#fff;
+}
+
+body.blue .sidebar { background:#081523; }
+
+body.blue .header {
+    background:#07111f;
+    border-bottom-color:rgba(148,170,195,.16);
+}
+
+body.blue .welcome-card,
+body.blue .balance-card {
+    background:linear-gradient(135deg,#102337,#091625);
+}
+
+body.blue .card,
+body.blue .stat {
+    background:#0d1b2a;
+    border-color:#20374d;
+}
+
+body.blue .quick-action {
+    background:#102337;
+    border-color:#294159;
+}
+
+body.blue .search-input,
+body.blue .form-group input,
+body.blue .form-group select,
+body.blue .form-group textarea,
+body.blue .setting-row select {
+    background:#12263a;
+    border-color:#2b435b;
+    color:#fff;
+}
+
+body.blue .form-group select option {
+    background:#12263a;
+    color:#fff;
+}
+
+body.blue .btn-dark {
+    background:#13283d;
+    border-color:#2b435b;
+    color:#fff;
+}
+
+body.blue .product-card {
+    background:#0d1b2a;
+    border-color:#20374d;
+}
+
+body.blue .product-card-image { background:#091625; }
+
+body.blue .payment-option {
+    background:#102337;
+    border-color:#2b435b;
+}
+
+body.blue .dynamic-box {
+    background:#102337;
+    border-color:#294159;
+}
+
+body.blue .data-table th,
+body.blue .data-table td {
+    border-bottom-color:#294159;
+}
+
+body.blue .buyer:hover,
+body.blue .buyer.active {
+    background:rgba(212,175,55,.10);
+}
+
+body.blue .message.buyer { background:#173049; }
+
+body.blue .chat-input input {
+    background:#12263a;
+    border-color:#2b435b;
+    color:#fff;
+}
+
+body.blue .setting-row { border-bottom-color:#294159; }
+
+body.blue .modal-box { background:#0a1725; }
+
+body.blue .modal-close {
+    background:#102337;
+    border-color:#2b435b;
+}
+
+body.blue .mini-stat { background:#102337; }
+
+@media(max-width:1100px) {
+    .stats-grid,
+    .sales-stat-grid {
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .product-grid {
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .quick-actions {
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .grid-4 {
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:850px) {
+    .sidebar { width:205px; }
+    .main { margin-left:205px; }
+
+    .withdraw-grid,
+    .grid-2 {
+        grid-template-columns:1fr;
+    }
+
+    .chat-layout {
+        grid-template-columns:220px 1fr;
+    }
+}
+@media(max-width:650px) {
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -260px;
+        width: 240px;
+        height: 100vh;
+        z-index: 9999;
+        border-right: 1px solid var(--border);
+        border-bottom: none;
+        transition: left .3s ease;
+        overflow-y: auto;
+    }
+
+    .sidebar.mobile-open {
+        left: 0;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .header {
+        position: relative;
+        padding: 14px 16px;
+        padding-left: 60px;
+    }
+
+    .content {
+        padding: 16px;
+    }
+
+    .stats-grid,
+    .sales-stat-grid,
+    .product-grid,
+    .quick-actions,
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+
+    .payment-methods {
+        grid-template-columns: 1fr;
+    }
+
+    .chat-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .buyers-list {
+        max-height: 200px;
+    }
+
+    .chat-window {
+        min-height: 450px;
+    }
+
+    .image-preview-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .header-right {
+        display: none;
+    }
+}
+/* MOBILE MENU BUTTON */
+.mobile-menu-btn {
+    display: none;
+}
+
+/* MOBILE VERSION */
+@media (max-width: 650px) {
+
+    .mobile-menu-btn {
+        display: flex;
+        position: fixed;
+        top: 14px;
+        left: 14px;
+
+        width: 42px;
+        height: 42px;
+
+        align-items: center;
+        justify-content: center;
+
+        background: var(--dark2);
+        color: var(--gold);
+
+        border: 1px solid var(--border);
+        border-radius: 8px;
+
+        font-size: 22px;
+        cursor: pointer;
+
+        z-index: 10001;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -260px;
+
+        width: 240px;
+        height: 100vh;
+
+        z-index: 10000;
+
+        transition: left 0.3s ease;
+
+        overflow-y: auto;
+    }
+
+    .sidebar.mobile-open {
+        left: 0;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+/* MOBILE SELLER MENU */
+.mobile-menu-btn {
+    display: none;
+}
+
+@media (max-width: 650px) {
+
+    .mobile-menu-btn {
+        display: flex;
+        position: fixed;
+        top: 14px;
+        left: 14px;
+        width: 42px;
+        height: 42px;
+        align-items: center;
+        justify-content: center;
+        background: var(--dark2);
+        color: var(--gold);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 22px;
+        cursor: pointer;
+        z-index: 10001;
+    }
+
+    .sidebar {
+        position: fixed !important;
+        top: 0;
+        left: -260px;
+        width: 240px !important;
+        height: 100vh;
+        z-index: 10000;
+        transition: left 0.3s ease;
+        overflow-y: auto;
+    }
+
+    .sidebar.mobile-open {
+        left: 0 !important;
+    }
+
+    .main {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="logo-area">
+        <img src="./ONLY C.png" alt="Cassano">
+        <h2>CASSANO</h2>
+        <p>SELLER CENTER</p>
+    </div>
+
+    <div class="sidebar-title">SELLER MENU</div>
+
+    <button class="side-link active" data-section="dashboard"
+        onclick="showSellerSection('dashboard')">
+        <span class="side-icon">⌂</span>
+        Dashboard
+    </button>
+
+    <button class="side-link" data-section="products"
+        onclick="showSellerSection('products')">
+        <span class="side-icon">📦</span>
+        Products
+    </button>
+
+    <button class="side-link" data-section="orders"
+        onclick="showSellerSection('orders')">
+        <span class="side-icon">🛒</span>
+        Orders
+    </button>
+
+    <button class="side-link" data-section="sales"
+        onclick="showSellerSection('sales')">
+        <span class="side-icon">📊</span>
+        Sales
+    </button>
+
+    <button class="side-link" data-section="chat"
+        onclick="showSellerSection('chat')">
+        <span class="side-icon">💬</span>
+        Chat with Buyers
+    </button>
+
+    <button class="side-link" data-section="withdraw"
+        onclick="showSellerSection('withdraw')">
+        <span class="side-icon">💰</span>
+        Withdraw Money
+    </button>
+
+    <div class="sidebar-title">ACCOUNT</div>
+
+    <button class="side-link" data-section="profile"
+        onclick="showSellerSection('profile')">
+        <span class="side-icon">👤</span>
+        Seller Profile
+    </button>
+
+    <button class="side-link" data-section="agreements"
+        onclick="showSellerSection('agreements')">
+        <span class="side-icon">📄</span>
+        Seller Agreements
+    </button>
+
+    <button class="side-link" data-section="settings"
+        onclick="showSellerSection('settings')">
+        <span class="side-icon">⚙</span>
+        Settings
+    </button>
+
+    <div class="sidebar-title">MARKETPLACE</div>
+
+    <button class="side-link" onclick="openMarketplace()">
+        <span class="side-icon">🌍</span>
+        Marketplace
+    </button>
+
+    <button class="side-link logout-link" onclick="sellerLogout()">
+        <span class="side-icon">↪</span>
+        Logout
+    </button>
+
+</aside>
+
+
+<main class="main">
+
+<header class="header">
+
+    <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">☰</button>
+    <div class="header-left">
+        <h1 id="pageTitle">Seller Dashboard</h1>
+        <p id="pageSubtitle">
+            Manage your business on Cassano Marketplace.
+        </p>
+    </div>
+
+    <div class="header-right">
+        <span class="header-business" id="headerBusiness">
+            Seller
+        </span>
+
+        <span class="header-badge">
+            SELLER ACCOUNT
+        </span>
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =====================================================
+DASHBOARD
+===================================================== -->
+
+<section id="dashboardSection" class="seller-section active">
+
+    <div class="welcome-card">
+
+        <div class="welcome-small">
+            WELCOME BACK
+        </div>
+
+        <h2>
+            <span id="welcomeBusiness">Your Business</span>
+        </h2>
+
+        <p>
+            Manage products, orders, sales, customer
+            conversations and seller payouts from one place.
+        </p>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat">
+            <div class="stat-label">TOTAL SALES</div>
+
+            <div class="stat-value" id="dashTotalSales">
+                TZS 0
+            </div>
+
+            <div class="stat-note">
+                All-time sales
+            </div>
+        </div>
+
+
+        <div class="stat">
+            <div class="stat-label">AVAILABLE BALANCE</div>
+
+            <div class="stat-value" id="dashBalance">
+                TZS 0
+            </div>
+
+            <div class="stat-note">
+                Ready for withdrawal
+            </div>
+        </div>
+
+
+        <div class="stat">
+            <div class="stat-label">PENDING PAYOUT</div>
+
+            <div class="stat-value" id="dashPending">
+                TZS 0
+            </div>
+
+            <div class="stat-note">
+                Processing
+            </div>
+        </div>
+
+
+        <div class="stat">
+            <div class="stat-label">PRODUCTS</div>
+
+            <div class="stat-value" id="dashProductCount">
+                0
+            </div>
+
+            <div class="stat-note">
+                Listed products
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Quick Actions</h3>
+
+        <p class="card-subtitle">
+            Quickly access the most important seller tools.
+        </p>
+
+        <div class="quick-actions">
+
+            <button class="quick-action"
+                onclick="showSellerSection('products');openProductForm()">
+
+                <div class="quick-action-icon">➕</div>
+
+                <strong>Add Product</strong>
+
+                <span>List a new product</span>
+
+            </button>
+
+
+            <button class="quick-action"
+                onclick="showSellerSection('orders')">
+
+                <div class="quick-action-icon">🛒</div>
+
+                <strong>Orders</strong>
+
+                <span>Manage customer orders</span>
+
+            </button>
+
+
+            <button class="quick-action"
+                onclick="showSellerSection('sales')">
+
+                <div class="quick-action-icon">📊</div>
+
+                <strong>Sales</strong>
+
+                <span>View business performance</span>
+
+            </button>
+
+
+            <button class="quick-action"
+                onclick="showSellerSection('chat')">
+
+                <div class="quick-action-icon">💬</div>
+
+                <strong>Messages</strong>
+
+                <span>Chat with buyers</span>
+
+            </button>
+
+
+            <button class="quick-action"
+                onclick="showSellerSection('withdraw')">
+
+                <div class="quick-action-icon">💰</div>
+
+                <strong>Withdraw</strong>
+
+                <span>Manage your earnings</span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+PRODUCTS
+===================================================== -->
+
+<section id="productsSection" class="seller-section">
+
+    <div class="section-heading">
+        <h2>Product Management</h2>
+        <p>
+            Add, edit, hide and manage your products and stock.
+        </p>
+    </div>
+
+
+    <div class="toolbar">
+
+        <div class="toolbar-left">
+
+            <button class="btn btn-gold"
+                onclick="openProductForm()">
+                + ADD PRODUCT
+            </button>
+
+            <button class="btn btn-dark"
+                onclick="filterProducts('all')">
+                ALL PRODUCTS
+            </button>
+
+            <button class="btn btn-dark"
+                onclick="filterProducts('active')">
+                ACTIVE
+            </button>
+
+            <button class="btn btn-dark"
+                onclick="filterProducts('hidden')">
+                HIDDEN
+            </button>
+
+        </div>
+
+
+        <input
+            class="search-input"
+            id="productSearch"
+            placeholder="Search products..."
+            oninput="renderProducts()"
+        >
+
+    </div>
+
+
+    <div class="product-grid" id="sellerProductsGrid"></div>
+
+
+    <div id="emptyProducts"
+        class="card"
+        style="display:none;text-align:center;padding:50px;">
+
+        <h3>No Products Yet</h3>
+
+        <p class="card-subtitle">
+            Start selling by adding your first product.
+        </p>
+
+        <button class="btn btn-gold"
+            onclick="openProductForm()">
+            ADD FIRST PRODUCT
+        </button>
+
+    </div>
+
+
+    <div class="card" style="margin-top:22px;">
+
+        <h3>Stock Management</h3>
+
+        <p class="card-subtitle">
+            Monitor inventory and update stock quantities.
+        </p>
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>PRODUCT</th>
+                        <th>SKU</th>
+                        <th>STOCK</th>
+                        <th>STATUS</th>
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+
+                <tbody id="stockTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+ORDERS
+===================================================== -->
+
+<section id="ordersSection" class="seller-section">
+
+    <div class="section-heading">
+        <h2>Orders</h2>
+        <p>Track and manage customer orders.</p>
+    </div>
+
+
+    <div class="order-tabs">
+
+        <button class="order-tab active"
+            data-order-tab="all"
+            onclick="setOrderTab('all')">
+            All
+        </button>
+
+        <button class="order-tab"
+            data-order-tab="New"
+            onclick="setOrderTab('New')">
+            New
+        </button>
+
+        <button class="order-tab"
+            data-order-tab="Processing"
+            onclick="setOrderTab('Processing')">
+            Processing
+        </button>
+
+        <button class="order-tab"
+            data-order-tab="Shipped"
+            onclick="setOrderTab('Shipped')">
+            Shipped
+        </button>
+
+        <button class="order-tab"
+            data-order-tab="Delivered"
+            onclick="setOrderTab('Delivered')">
+            Delivered
+        </button>
+
+        <button class="order-tab"
+            data-order-tab="Cancelled"
+            onclick="setOrderTab('Cancelled')">
+            Cancelled
+        </button>
+
+        <button class="order-tab"
+            data-order-tab="Returned"
+            onclick="setOrderTab('Returned')">
+            Returned
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>ORDER ID</th>
+                        <th>CUSTOMER</th>
+                        <th>PRODUCT</th>
+                        <th>TOTAL</th>
+                        <th>DESTINATION</th>
+                        <th>STATUS</th>
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+
+                <tbody id="ordersTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+SALES
+===================================================== -->
+
+<section id="salesSection" class="seller-section">
+
+    <div class="section-heading">
+        <h2>Sales & Analytics</h2>
+        <p>
+            Understand your revenue and product performance.
+        </p>
+    </div>
+
+
+    <div class="sales-tabs">
+
+        <button class="sales-tab active"
+            onclick="setSalesPeriod('today',this)">
+            TODAY
+        </button>
+
+        <button class="sales-tab"
+            onclick="setSalesPeriod('week',this)">
+            THIS WEEK
+        </button>
+
+        <button class="sales-tab"
+            onclick="setSalesPeriod('month',this)">
+            THIS MONTH
+        </button>
+
+        <button class="sales-tab"
+            onclick="setSalesPeriod('year',this)">
+            THIS YEAR
+        </button>
+
+    </div>
+
+
+    <div class="sales-stat-grid">
+
+        <div class="stat">
+            <div class="stat-label">SALES</div>
+            <div class="sales-number" id="salesPeriodAmount">
+                TZS 0
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">ORDERS</div>
+            <div class="sales-number" id="salesOrderCount">
+                0
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">AVERAGE ORDER VALUE</div>
+            <div class="sales-number" id="averageOrder">
+                TZS 0
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">PRODUCTS SOLD</div>
+            <div class="sales-number" id="productsSold">
+                0
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="grid-2">
+
+        <div class="card">
+
+            <h3>Revenue History</h3>
+
+            <p class="card-subtitle">
+                Sales activity overview.
+            </p>
+
+            <div class="chart" id="salesChart"></div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Best-Selling Products</h3>
+
+            <p class="card-subtitle">
+                Your top performing products.
+            </p>
+
+            <div id="bestSellingProducts"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+CHAT
+===================================================== -->
+
+<section id="chatSection" class="seller-section">
+
+    <div class="section-heading">
+
+        <h2>Chat with Buyers</h2>
+
+        <p>
+            Communicate with customers about their orders and products.
+        </p>
+
+    </div>
+
+
+    <div class="chat-layout">
+
+        <div class="card buyers-list">
+
+            <h3>Buyers</h3>
+
+            <p class="card-subtitle">
+                Conversations
+            </p>
+
+            <div class="buyer active"
+                onclick="selectBuyer('Amina Hassan')">
+
+                <div class="buyer-name">
+                    Amina Hassan
+                </div>
+
+                <div class="buyer-message">
+                    Is this product still available?
+                </div>
+
+            </div>
+
+
+            <div class="buyer"
+                onclick="selectBuyer('Daniel Mwangi')">
+
+                <div class="buyer-name">
+                    Daniel Mwangi
+                </div>
+
+                <div class="buyer-message">
+                    How long is delivery?
+                </div>
+
+            </div>
+
+
+            <div class="buyer"
+                onclick="selectBuyer('Sarah Joseph')">
+
+                <div class="buyer-name">
+                    Sarah Joseph
+                </div>
+
+                <div class="buyer-message">
+                    I would like another colour.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card chat-window">
+
+            <div class="chat-header">
+
+                <strong id="chatBuyer">
+                    Amina Hassan
+                </strong>
+
+                <div style="color:var(--muted);font-size:10px;margin-top:4px;">
+                    Buyer
+                </div>
+
+            </div>
+
+
+            <div class="messages" id="messages">
+
+                <div class="message buyer">
+                    Is this product still available?
+                </div>
+
+                <div class="message seller">
+                    Yes, it is currently available.
+                </div>
+
+            </div>
+
+
+            <div class="chat-input">
+
+                <input
+                    id="chatMessage"
+                    placeholder="Type your message..."
+                    onkeydown="if(event.key==='Enter')sendMessage()"
+                >
+
+                <button
+                    class="btn btn-gold"
+                    onclick="sendMessage()">
+                    SEND
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+WITHDRAW
+===================================================== -->
+
+<section id="withdrawSection" class="seller-section">
+
+    <div class="section-heading">
+
+        <h2>Withdraw Money</h2>
+
+        <p>
+            Manage your seller earnings and payout methods.
+        </p>
+
+    </div>
+
+
+    <div class="balance-card">
+
+        <div class="balance-label">
+            AVAILABLE BALANCE
+        </div>
+
+        <div class="balance-amount" id="withdrawBalance">
+            TZS 0
+        </div>
+
+        <div class="balance-note">
+            Available earnings ready for withdrawal.
+        </div>
+
+    </div>
+
+
+    <div class="withdraw-grid">
+
+        <div class="card">
+
+            <h3>Choose Withdrawal Method</h3>
+
+            <p class="card-subtitle">
+                Select how you want to receive your seller earnings.
+            </p>
+
+
+            <div class="grid-2">
+
+                <button
+                    class="quick-action"
+                    onclick="openWithdrawalCategory('mobile')">
+
+                    <div class="quick-action-icon">
+                        📱
+                    </div>
+
+                    <strong>
+                        MOBILE NETWORKS
+                    </strong>
+
+                    <span>
+                        Mobile money
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="quick-action"
+                    onclick="openWithdrawalCategory('bank')">
+
+                    <div class="quick-action-icon">
+                        🏦
+                    </div>
+
+                    <strong>
+                        BANK
+                    </strong>
+
+                    <span>
+                        Bank account
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- MOBILE NETWORKS -->
+
+            <div id="mobileWithdrawalPanel"
+                class="dynamic-box">
+
+                <div class="dynamic-title">
+                    📱 MOBILE NETWORKS
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>COUNTRY</label>
+
+                    <select
+                        id="mobileCountry"
+                        onchange="loadMobileNetworks()">
+
+                        <option value="">
+                            Select Country
+                        </option>
+
+                        <option value="tanzania">
+                            🇹🇿 Tanzania
+                        </option>
+
+                        <option value="kenya">
+                            🇰🇪 Kenya
+                        </option>
+
+                        <option value="uganda">
+                            🇺🇬 Uganda
+                        </option>
+
+                        <option value="rwanda">
+                            🇷🇼 Rwanda
+                        </option>
+
+                        <option value="burundi">
+                            🇧🇮 Burundi
+                        </option>
+
+                        <option value="south-sudan">
+                            🇸🇸 South Sudan
+                        </option>
+
+                        <option value="ethiopia">
+                            🇪🇹 Ethiopia
+                        </option>
+
+                        <option value="somalia">
+                            🇸🇴 Somalia
+                        </option>
+
+                        <option value="djibouti">
+                            🇩🇯 Djibouti
+                        </option>
+
+                        <option value="eritrea">
+                            🇪🇷 Eritrea
+                        </option>
+
+                        <option value="mozambique">
+                            🇲🇿 Mozambique
+                        </option>
+
+                        <option value="other">
+                            🌍 Other Country
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>NETWORK</label>
+
+                    <select id="mobileNetwork">
+
+                        <option value="">
+                            Select Network
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>PHONE NUMBER</label>
+
+                    <input
+                        id="mobilePhone"
+                        type="tel"
+                        placeholder="+255..."
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>ACCOUNT NAME</label>
+
+                    <input
+                        id="mobileAccountName"
+                        placeholder="Full name"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>WITHDRAWAL AMOUNT</label>
+
+                    <input
+                        id="mobileWithdrawAmount"
+                        type="number"
+                        min="1"
+                        placeholder="Enter amount"
+                    >
+
+                </div>
+
+
+                <button
+                    class="btn btn-gold"
+                    onclick="saveMobilePayment()">
+
+                    SAVE PAYMENT METHOD
+
+                </button>
+
+                <button
+                    class="btn btn-dark"
+                    style="margin-left:6px;"
+                    onclick="closeWithdrawalPanels()">
+
+                    CLOSE
+
+                </button>
+
+            </div>
+
+
+            <!-- BANK -->
+
+            <div id="bankWithdrawalPanel"
+                class="dynamic-box">
+
+                <div class="dynamic-title">
+                    🏦 BANK
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>COUNTRY</label>
+
+                    <select
+                        id="bankCountry"
+                        onchange="loadBanks()">
+
+                        <option value="">
+                            Select Country
+                        </option>
+
+                        <option value="tanzania">
+                            🇹🇿 Tanzania
+                        </option>
+
+                        <option value="kenya">
+                            🇰🇪 Kenya
+                        </option>
+
+                        <option value="uganda">
+                            🇺🇬 Uganda
+                        </option>
+
+                        <option value="rwanda">
+                            🇷🇼 Rwanda
+                        </option>
+
+                        <option value="burundi">
+                            🇧🇮 Burundi
+                        </option>
+
+                        <option value="south-sudan">
+                            🇸🇸 South Sudan
+                        </option>
+
+                        <option value="ethiopia">
+                            🇪🇹 Ethiopia
+                        </option>
+
+                        <option value="somalia">
+                            🇸🇴 Somalia
+                        </option>
+
+                        <option value="djibouti">
+                            🇩🇯 Djibouti
+                        </option>
+
+                        <option value="eritrea">
+                            🇪🇷 Eritrea
+                        </option>
+
+                        <option value="mozambique">
+                            🇲🇿 Mozambique
+                        </option>
+
+                        <option value="other">
+                            🌍 Other Country
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>BANK</label>
+
+                    <select id="bankName">
+
+                        <option value="">
+                            Select Bank
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>ACCOUNT NAME</label>
+
+                    <input
+                        id="bankAccountName"
+                        placeholder="Account holder name"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>ACCOUNT NUMBER</label>
+
+                    <input
+                        id="bankAccountNumber"
+                        placeholder="Account number"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>WITHDRAWAL AMOUNT</label>
+
+                    <input
+                        id="bankWithdrawAmount"
+                        type="number"
+                        min="1"
+                        placeholder="Enter amount"
+                    >
+
+                </div>
+
+
+                <button
+                    class="btn btn-gold"
+                    onclick="saveBankPayment()">
+
+                    SAVE BANK ACCOUNT
+
+                </button>
+
+                <button
+                    class="btn btn-dark"
+                    style="margin-left:6px;"
+                    onclick="closeWithdrawalPanels()">
+
+                    CLOSE
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Withdrawal Information</h3>
+
+            <p class="card-subtitle">
+                Important payout information.
+            </p>
+
+
+            <div class="info-item">
+
+                <strong style="font-size:12px;">
+                    🌍 International Sellers
+                </strong>
+
+                <p style="color:var(--muted);font-size:10px;line-height:1.6;margin-top:6px;">
+                    Sellers can choose their country and the
+                    available payout method.
+                </p>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <strong style="font-size:12px;">
+                    📱 Mobile Money
+                </strong>
+
+                <p style="color:var(--muted);font-size:10px;line-height:1.6;margin-top:6px;">
+                    Mobile money options change according to
+                    the selected country.
+                </p>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <strong style="font-size:12px;">
+                    🏦 Bank Transfer
+                </strong>
+
+                <p style="color:var(--muted);font-size:10px;line-height:1.6;margin-top:6px;">
+                    Bank account details can be saved for future
+                    backend payout integration.
+                </p>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <strong style="font-size:12px;">
+                    🔐 Security
+                </strong>
+
+                <p style="color:var(--muted);font-size:10px;line-height:1.6;margin-top:6px;">
+                    Actual money transfer will require secure
+                    backend/payment-provider integration.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card withdraw-history">
+
+        <h3>Withdrawal History</h3>
+
+        <p class="card-subtitle">
+            Previous withdrawal requests.
+        </p>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+                        <th>DATE</th>
+                        <th>COUNTRY</th>
+                        <th>METHOD</th>
+                        <th>ACCOUNT</th>
+                        <th>AMOUNT</th>
+                        <th>STATUS</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="withdrawHistory"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+PROFILE
+===================================================== -->
+
+<section id="profileSection" class="seller-section">
+
+    <div class="section-heading">
+
+        <h2>Seller Profile</h2>
+
+        <p>
+            Manage your business information.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="profile-header">
+
+            <div class="profile-avatar" id="profileAvatar">
+                C
+            </div>
+
+            <div>
+
+                <h2 id="profileBusinessName">
+                    Your Business
+                </h2>
+
+                <p style="color:var(--muted);font-size:11px;margin-top:5px;">
+                    Cassano Seller
+                </p>
+
+
+                <div class="profile-photo-actions">
+
+                    <label class="btn btn-gold"
+                        style="display:inline-block;">
+
+                        ADD / CHANGE PHOTO
+
+                        <input
+                            type="file"
+                            id="profilePhotoInput"
+                            accept="image/*"
+                            onchange="changeProfilePhoto(event)"
+                            style="display:none;"
+                        >
+
+                    </label>
+
+
+                    <button
+                        class="btn btn-dark"
+                        onclick="removeProfilePhoto()">
+
+                        REMOVE PHOTO
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>BUSINESS NAME</label>
+
+                <input
+                    id="profileBusiness"
+                    placeholder="Business name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>OWNER FULL NAME</label>
+
+                <input
+                    id="profileOwner"
+                    placeholder="Full name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>PHONE</label>
+
+                <input
+                    id="profilePhone"
+                    placeholder="+255..."
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>EMAIL</label>
+
+                <input
+                    id="profileEmail"
+                    type="email"
+                    placeholder="business@email.com"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>REGION / LOCATION</label>
+
+                <input
+                    id="profileLocation"
+                    placeholder="Dar es Salaam"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>BUSINESS CATEGORY</label>
+
+                <select id="profileCategory">
+
+                    <option>Fashion</option>
+                    <option>Electronics</option>
+                    <option>Beauty</option>
+                    <option>Home & Living</option>
+                    <option>Food</option>
+                    <option>Accessories</option>
+                    <option>Other</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                class="btn btn-gold"
+                onclick="saveProfile()">
+
+                SAVE PROFILE
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+AGREEMENTS
+===================================================== -->
+
+<section id="agreementsSection" class="seller-section">
+
+    <div class="section-heading">
+
+        <h2>Seller Agreements</h2>
+
+        <p>
+            Review the terms that apply when selling through Cassano Marketplace.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="agreement-box">
+
+            <h3>
+                CASSANO MARKETPLACE SELLER AGREEMENT
+            </h3>
+
+            <p style="margin-top:10px;">
+                This Seller Agreement sets out the general rules and
+                responsibilities applicable to sellers using Cassano Marketplace.
+            </p>
+
+
+            <h4>1. Seller Eligibility & Verification</h4>
+
+            <p>
+                Sellers must provide accurate registration information and
+                may be required to provide identification or business information
+                for verification.
+            </p>
+
+
+            <h4>2. Seller Account Responsibilities</h4>
+
+            <p>
+                The seller is responsible for keeping account information,
+                login credentials and payment information secure and accurate.
+            </p>
+
+
+            <h4>3. Product Listing Rules</h4>
+
+            <p>
+                Product names, descriptions, prices, stock quantities, images,
+                colors, sizes and other listing information must be accurate.
+            </p>
+
+
+            <h4>4. Authenticity & Prohibited Products</h4>
+
+            <p>
+                Sellers must not knowingly list counterfeit, stolen, illegal,
+                unsafe or otherwise prohibited goods.
+            </p>
+
+
+            <h4>5. Pricing & Promotions</h4>
+
+            <p>
+                Sellers control their product prices and promotions but must
+                ensure that displayed discounts and original prices are truthful.
+            </p>
+
+
+            <h4>6. Orders & Fulfillment</h4>
+
+            <p>
+                Sellers are responsible for processing accepted orders,
+                maintaining sufficient stock and providing accurate order status.
+            </p>
+
+
+            <h4>7. Delivery Responsibilities</h4>
+
+            <p>
+                Sellers must provide accurate delivery information and cooperate
+                with the applicable delivery process.
+            </p>
+
+
+            <h4>8. Returns, Refunds & Disputes</h4>
+
+            <p>
+                Sellers must cooperate with valid customer complaints, returns,
+                refunds and dispute-resolution procedures applicable to the order.
+            </p>
+
+
+            <h4>9. Cassano Platform Commission</h4>
+
+            <p>
+                Cassano Marketplace's current standard platform commission is
+                <strong style="color:var(--gold-light);">10%</strong> of the
+                applicable customer transaction value.
+            </p>
+
+            <p style="margin-top:8px;">
+                Example: if a customer pays TZS 100,000 for an applicable sale,
+                a 10% platform commission is TZS 10,000 and the seller proceeds
+                are TZS 90,000 before any other applicable costs or adjustments.
+            </p>
+
+
+            <h4>10. Payments & Withdrawals</h4>
+
+            <p>
+                Seller earnings may become available for withdrawal according
+                to Cassano's applicable payment and settlement process.
+                Actual payment processing requires secure backend/payment-provider
+                integration.
+            </p>
+
+
+            <h4>11. Customer Data & Privacy</h4>
+
+            <p>
+                Sellers must use customer information only for legitimate
+                marketplace transactions and must respect applicable privacy
+                and data-protection requirements.
+            </p>
+
+
+            <h4>12. Intellectual Property</h4>
+
+            <p>
+                Sellers must have the necessary rights to use product images,
+                descriptions, logos and other content uploaded to the platform.
+            </p>
+
+
+            <h4>13. Fraud & Misrepresentation</h4>
+
+            <p>
+                Fraudulent transactions, fake products, misleading information,
+                manipulation of orders or other dishonest activity may result
+                in account restrictions or termination.
+            </p>
+
+
+            <h4>14. Account Suspension / Termination</h4>
+
+            <p>
+                Cassano may restrict or suspend seller access where there is
+                evidence of serious violations, fraud, unsafe activity or
+                repeated breaches of marketplace rules.
+            </p>
+
+
+            <h4>15. Complaints & Dispute Resolution</h4>
+
+            <p>
+                Sellers agree to cooperate with Cassano's applicable process
+                for investigating customer complaints and resolving disputes.
+            </p>
+
+
+            <h4>16. Agreement Changes</h4>
+
+            <p>
+                Cassano may update seller rules, commission structures or other
+                terms when necessary. Material changes should be communicated
+                through appropriate platform channels.
+            </p>
+
+
+            <h4>17. Seller Acceptance</h4>
+
+            <p>
+                By accepting this agreement, the seller confirms that the
+                information supplied to Cassano is accurate and agrees to
+                comply with the marketplace seller rules.
+            </p>
+
+        </div>
+
+
+        <div class="agreement-accept">
+
+            <label style="display:flex;gap:10px;align-items:flex-start;">
+
+                <input
+                    type="checkbox"
+                    id="agreementCheckbox"
+                    style="margin-top:3px;"
+                >
+
+                <span style="font-size:11px;line-height:1.6;">
+
+                    I have read and agree to the Cassano Marketplace
+                    Seller Agreement, including the current
+                    <strong style="color:var(--gold-light);">
+                        10% platform commission
+                    </strong>
+                    applicable to eligible transactions.
+
+                </span>
+
+            </label>
+
+
+            <button
+                class="btn btn-gold"
+                style="margin-top:15px;"
+                onclick="acceptAgreement()">
+
+                ACCEPT AGREEMENT
+
+            </button>
+
+
+            <p
+                id="agreementStatus"
+                style="color:var(--muted);font-size:10px;margin-top:12px;"
+            >
+                Agreement not accepted yet.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+SETTINGS
+===================================================== -->
+
+<section id="settingsSection" class="seller-section">
+
+    <div class="section-heading">
+
+        <h2>Settings</h2>
+
+        <p>
+            Customize your Seller Center.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="setting-row">
+
+            <div class="setting-info">
+
+                <h4>Appearance</h4>
+
+                <p>
+                    Choose your Seller Center theme.
+                </p>
+
+            </div>
+
+
+            <select
+                id="themeSetting"
+                onchange="changeTheme(this.value)">
+
+                <option value="dark">
+                    🖤 Dark Mode
+                </option>
+
+                <option value="light">
+                    🤍 Light Mode
+                </option>
+
+                <option value="blue">
+                    🔵 Luxury Blue Mode
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <div class="setting-info">
+
+                <h4>Notifications</h4>
+
+                <p>
+                    Receive seller notifications.
+                </p>
+
+            </div>
+
+
+            <button
+                id="notificationToggle"
+                class="btn btn-success"
+                onclick="toggleNotification()">
+
+                ON
+
+            </button>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <div class="setting-info">
+
+                <h4>Buyer Chat</h4>
+
+                <p>
+                    Allow buyer conversations.
+                </p>
+
+            </div>
+
+
+            <button
+                id="chatToggle"
+                class="btn btn-success"
+                onclick="toggleChatSetting()">
+
+                ON
+
+            </button>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <div class="setting-info">
+
+                <h4>Platform Commission</h4>
+
+                <p>
+                    Current standard Cassano platform commission.
+                </p>
+
+            </div>
+
+            <strong style="color:var(--gold-light);">
+                10%
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</div>
+</main>
+
+
+<!-- =====================================================
+PRODUCT MODAL
+===================================================== -->
+
+<div class="modal" id="productModal">
+
+    <div class="modal-box">
+
+        <button
+            class="modal-close"
+            onclick="closeProductForm()">
+            ×
+        </button>
+
+
+        <h2 id="productModalTitle">
+            Add Product
+        </h2>
+
+        <p
+            style="color:var(--muted);font-size:11px;margin:7px 0 22px;"
+        >
+            Add complete product information for your marketplace listing.
+        </p>
+
+
+        <input type="hidden" id="editingProductId">
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>PRODUCT NAME</label>
+
+                <input
+                    id="productName"
+                    placeholder="e.g. Premium Watch"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>BRAND</label>
+
+                <input
+                    id="productBrand"
+                    placeholder="Brand name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>CATEGORY</label>
+
+                <select id="productCategory">
+
+                    <option>Fashion</option>
+                    <option>Watches</option>
+                    <option>Perfumes</option>
+                    <option>Beauty</option>
+                    <option>Electronics</option>
+                    <option>Phones</option>
+                    <option>Accessories</option>
+                    <option>Home & Living</option>
+                    <option>Food</option>
+                    <option>Footwear</option>
+                    <option>Bags</option>
+                    <option>Other</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>PRODUCT CONDITION</label>
+
+                <select id="productCondition">
+
+                    <option>New</option>
+                    <option>Used</option>
+                    <option>Refurbished</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>PRICE (TZS)</label>
+
+                <input
+                    id="productPrice"
+                    type="number"
+                    min="0"
+                    placeholder="100000"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>DISCOUNT (%)</label>
+
+                <input
+                    id="productDiscount"
+                    type="number"
+                    min="0"
+                    max="100"
+                    placeholder="20"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>OLD PRICE (TZS)</label>
+
+                <input
+                    id="productOldPrice"
+                    type="number"
+                    min="0"
+                    placeholder="150000"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>STOCK QUANTITY</label>
+
+                <input
+                    id="productStock"
+                    type="number"
+                    min="0"
+                    placeholder="10"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>SKU</label>
+
+                <input
+                    id="productSku"
+                    placeholder="SKU-001"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>PRODUCT LOCATION</label>
+
+                <input
+                    id="productLocation"
+                    placeholder="Dar es Salaam"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>COLORS</label>
+
+                <input
+                    id="productColors"
+                    placeholder="Black, Gold, Silver"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>SIZES</label>
+
+                <input
+                    id="productSizes"
+                    placeholder="S, M, L, XL"
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>DESCRIPTION</label>
+
+                <textarea
+                    id="productDescription"
+                    placeholder="Describe your product..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>DELIVERY INFORMATION</label>
+
+                <textarea
+                    id="productDelivery"
+                    placeholder="Delivery information..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    PRODUCT IMAGES
+                    <span style="color:var(--gold-light);">
+                        (MULTIPLE)
+                    </span>
+                </label>
+
+                <input
+                    type="file"
+                    id="productImages"
+                    accept="image/*"
+                    multiple
+                    onchange="previewProductImages(event)"
+                >
+
+                <div
+                    id="productImagePreview"
+                    class="image-preview-grid"
+                ></div>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    PRODUCT VIDEO
+                    <span style="color:var(--muted);">
+                        (OPTIONAL)
+                    </span>
+                </label>
+
+                <input
+                    type="file"
+                    id="productVideo"
+                    accept="video/*"
+                    onchange="previewProductVideo(event)"
+                >
+
+                <video
+                    id="productVideoPreview"
+                    class="video-preview"
+                    controls
+                    style="display:none;"
+                ></video>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>PRODUCT STATUS</label>
+
+                <select id="productStatus">
+
+                    <option value="Active">
+                        Active
+                    </option>
+
+                    <option value="Hidden">
+                        Hidden
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                class="btn btn-gold"
+                onclick="saveProduct()">
+
+                SAVE PRODUCT
+
+            </button>
+
+            <button
+                class="btn btn-dark"
+                onclick="closeProductForm()">
+
+                CANCEL
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+ORDER DETAILS MODAL
+===================================================== -->
+
+<div class="modal" id="orderModal">
+
+    <div class="modal-box">
+
+        <button
+            class="modal-close"
+            onclick="closeOrderModal()">
+            ×
+        </button>
+
+        <h2>Order Details</h2>
+
+        <div
+            id="orderDetails"
+            style="margin-top:20px;"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+SELLER DATA
+========================================================= */
+
+let sellerBusiness =
+    localStorage.getItem("cassanoSellerBusiness") ||
+    "Your Business";
+
+let profile =
+    JSON.parse(
+        localStorage.getItem("cassanoSellerProfile") || "{}"
+    );
+
+let products =
+    JSON.parse(
+        localStorage.getItem("cassanoSellerProducts") || "[]"
+    );
+
+let orders =
+    JSON.parse(
+        localStorage.getItem("cassanoSellerOrders") || "[]"
+    );
+
+let withdrawals =
+    JSON.parse(
+        localStorage.getItem("cassanoWithdrawals") || "[]"
+    );
+
+let currentProductFilter = "all";
+let currentOrderTab = "all";
+let editingProductId = null;
+
+
+/* =========================================================
+NAVIGATION
+========================================================= */
+
+const sectionTitles = {
+
+    dashboard: [
+        "Seller Dashboard",
+        "Manage your business on Cassano Marketplace."
+    ],
+
+    products: [
+        "Product Management",
+        "Manage your products and stock."
+    ],
+
+    orders: [
+        "Orders",
+        "Track and manage customer orders."
+    ],
+
+    sales: [
+        "Sales & Analytics",
+        "Understand your business performance."
+    ],
+
+    chat: [
+        "Chat with Buyers",
+        "Communicate with your customers."
+    ],
+
+    withdraw: [
+        "Withdraw Money",
+        "Manage your seller earnings and payouts."
+    ],
+
+    profile: [
+        "Seller Profile",
+        "Manage your business information."
+    ],
+
+    agreements: [
+        "Seller Agreements",
+        "Review your marketplace seller agreement."
+    ],
+
+    settings: [
+        "Settings",
+        "Customize your Seller Center."
+    ]
+
+};
+
+
+function showSellerSection(section) {
+
+    document
+        .querySelectorAll(".seller-section")
+        .forEach(item => {
+            item.classList.remove("active");
+        });
+
+
+    const target =
+        document.getElementById(
+            section + "Section"
+        );
+
+
+    if (target) {
+        target.classList.add("active");
+    }
+
+
+    document
+        .querySelectorAll(".side-link")
+        .forEach(item => {
+            item.classList.remove("active");
+
+            if (
+                item.dataset.section === section
+            ) {
+                item.classList.add("active");
+            }
+        });
+
+
+    if (sectionTitles[section]) {
+
+        document.getElementById("pageTitle")
+            .textContent =
+            sectionTitles[section][0];
+
+        document.getElementById("pageSubtitle")
+            .textContent =
+            sectionTitles[section][1];
+
+    }
+
+
+    if (section === "products") {
+        renderProducts();
+        renderStock();
+    }
+
+    if (section === "orders") {
+        renderOrders();
+    }
+
+    if (section === "sales") {
+        renderSales();
+    }
+
+    if (section === "profile") {
+        loadProfile();
+    }
+
+    if (section === "withdraw") {
+        renderWithdrawHistory();
+        updateBalance();
+    }
+
+}
+
+
+/* =========================================================
+BUSINESS NAME
+========================================================= */
+
+function loadBusinessName() {
+
+    sellerBusiness =
+        localStorage.getItem(
+            "cassanoSellerBusiness"
+        ) ||
+        "Your Business";
+
+
+    document.getElementById(
+        "welcomeBusiness"
+    ).textContent =
+        sellerBusiness;
+
+
+    document.getElementById(
+        "headerBusiness"
+    ).textContent =
+        sellerBusiness;
+
+}
+
+
+function openMarketplace() {
+
+    window.location.href =
+        "marketplace.html";
+
+}
+
+
+/* =========================================================
+PRODUCT MANAGEMENT
+========================================================= */
+
+function openProductForm(product = null) {
+
+    document
+        .getElementById("productModal")
+        .classList.add("active");
+
+
+    if (product) {
+
+        editingProductId =
+            product.id;
+
+        document.getElementById(
+            "productModalTitle"
+        ).textContent =
+            "Edit Product";
+
+
+        document.getElementById(
+            "editingProductId"
+        ).value =
+            product.id;
+
+
+        document.getElementById(
+            "productName"
+        ).value =
+            product.name || "";
+
+
+        document.getElementById(
+            "productBrand"
+        ).value =
+            product.brand || "";
+
+
+        document.getElementById(
+            "productCategory"
+        ).value =
+            product.category || "Other";
+
+
+        document.getElementById(
+            "productCondition"
+        ).value =
+            product.condition || "New";
+
+
+        document.getElementById(
+            "productPrice"
+        ).value =
+            product.price || "";
+
+
+        document.getElementById(
+            "productDiscount"
+        ).value =
+            product.discount || "";
+
+
+        document.getElementById(
+            "productOldPrice"
+        ).value =
+            product.oldPrice || "";
+
+
+        document.getElementById(
+            "productStock"
+        ).value =
+            product.stock || 0;
+
+
+        document.getElementById(
+            "productSku"
+        ).value =
+            product.sku || "";
+
+
+        document.getElementById(
+            "productLocation"
+        ).value =
+            product.location || "";
+
+
+        document.getElementById(
+            "productColors"
+        ).value =
+            (product.colors || []).join(", ");
+
+
+        document.getElementById(
+            "productSizes"
+        ).value =
+            (product.sizes || []).join(", ");
+
+
+        document.getElementById(
+            "productDescription"
+        ).value =
+            product.description || "";
+
+
+        document.getElementById(
+            "productDelivery"
+        ).value =
+            product.delivery || "";
+
+
+        document.getElementById(
+            "productStatus"
+        ).value =
+            product.status || "Active";
+
+
+        renderExistingImages(
+            product.images || []
+        );
+
+    } else {
+
+        editingProductId = null;
+
+        document.getElementById(
+            "productModalTitle"
+        ).textContent =
+            "Add Product";
+
+
+        document.getElementById(
+            "editingProductId"
+        ).value =
+            "";
+
+
+        [
+            "productName",
+            "productBrand",
+            "productPrice",
+            "productDiscount",
+            "productOldPrice",
+            "productStock",
+            "productSku",
+            "productLocation",
+            "productColors",
+            "productSizes",
+            "productDescription",
+            "productDelivery"
+        ].forEach(id => {
+
+            document.getElementById(id).value = "";
+
+        });
+
+
+        document.getElementById(
+            "productStatus"
+        ).value =
+            "Active";
+
+
+        document.getElementById(
+            "productImagePreview"
+        ).innerHTML = "";
+
+
+        document.getElementById(
+            "productVideoPreview"
+        ).style.display =
+            "none";
+
+    }
+
+}
+
+
+function closeProductForm() {
+
+    document
+        .getElementById("productModal")
+        .classList.remove("active");
+
+}
+
+
+function previewProductImages(event) {
+
+    const files =
+        Array.from(event.target.files);
+
+
+    const preview =
+        document.getElementById(
+            "productImagePreview"
+        );
+
+
+    preview.innerHTML = "";
+
+
+    files.forEach(file => {
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            function(e) {
+
+                const box =
+                    document.createElement("div");
+
+                box.className =
+                    "image-preview";
+
+
+                box.innerHTML = `
+                    <img src="${e.target.result}">
+                `;
+
+
+                preview.appendChild(box);
+
+            };
+
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+
+
+function renderExistingImages(images) {
+
+    const preview =
+        document.getElementById(
+            "productImagePreview"
+        );
+
+
+    preview.innerHTML = "";
+
+
+    images.forEach(src => {
+
+        const box =
+            document.createElement("div");
+
+        box.className =
+            "image-preview";
+
+
+        box.innerHTML = `
+            <img src="${src}">
+        `;
+
+
+        preview.appendChild(box);
+
+    });
+
+}
+
+
+function previewProductVideo(event) {
+
+    const file =
+        event.target.files[0];
+
+
+    if (!file) return;
+
+
+    const preview =
+        document.getElementById(
+            "productVideoPreview"
+        );
+
+
+    preview.src =
+        URL.createObjectURL(file);
+
+
+    preview.style.display =
+        "block";
+
+}
+
+
+function readFilesAsDataURL(files) {
+
+    return Promise.all(
+
+        Array.from(files).map(file =>
+
+            new Promise(resolve => {
+
+                const reader =
+                    new FileReader();
+
+                reader.onload =
+                    () =>
+                        resolve(
+                            reader.result
+                        );
+
+                reader.readAsDataURL(file);
+
+            })
+
+        )
+
+    );
+
+}
+
+
+async function saveProduct() {
+
+    const name =
+        document.getElementById(
+            "productName"
+        ).value.trim();
+
+
+    const brand =
+        document.getElementById(
+            "productBrand"
+        ).value.trim();
+
+
+    const price =
+        Number(
+            document.getElementById(
+                "productPrice"
+            ).value
+        );
+
+
+    const stock =
+        Number(
+            document.getElementById(
+                "productStock"
+            ).value
+        );
+
+
+    if (!name) {
+        alert("Please enter the product name.");
+        return;
+    }
+
+
+    if (!price || price < 0) {
+        alert("Please enter a valid price.");
+        return;
+    }
+
+
+    if (stock < 0) {
+        alert("Stock cannot be negative.");
+        return;
+    }
+
+
+    const imageInput =
+        document.getElementById(
+            "productImages"
+        );
+
+
+    let images = [];
+
+
+    if (editingProductId) {
+
+        const oldProduct =
+            products.find(
+                item =>
+                    item.id === editingProductId
+            );
+
+
+        images =
+            oldProduct?.images || [];
+
+    }
+
+
+    if (imageInput.files.length) {
+
+        const newImages =
+            await readFilesAsDataURL(
+                imageInput.files
+            );
+
+
+        images =
+            newImages;
+
+    }
+
+
+    const discount =
+        Number(
+            document.getElementById(
+                "productDiscount"
+            ).value
+        ) || 0;
+
+
+    const oldPriceInput =
+        Number(
+            document.getElementById(
+                "productOldPrice"
+            ).value
+        ) || 0;
+
+
+    const colors =
+        document.getElementById(
+            "productColors"
+        ).value
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+
+
+    const sizes =
+        document.getElementById(
+            "productSizes"
+        ).value
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+
+
+    let finalOldPrice =
+        oldPriceInput;
+
+
+    if (
+        discount > 0 &&
+        !finalOldPrice
+    ) {
+
+        finalOldPrice =
+            Math.round(
+                price /
+                (1 - discount / 100)
+            );
+
+    }
+
+
+    const product = {
+
+        id:
+            editingProductId ||
+            "PROD-" + Date.now(),
+
+        name,
+
+        brand,
+
+        category:
+            document.getElementById(
+                "productCategory"
+            ).value,
+
+        condition:
+            document.getElementById(
+                "productCondition"
+            ).value,
+
+        price,
+
+        discount,
+
+        oldPrice:
+            finalOldPrice,
+
+        newPrice:
+            price,
+
+        stock,
+
+        sku:
+            document.getElementById(
+                "productSku"
+            ).value.trim(),
+
+        location:
+            document.getElementById(
+                "productLocation"
+            ).value.trim(),
+
+        colors,
+
+        sizes,
+
+        description:
+            document.getElementById(
+                "productDescription"
+            ).value.trim(),
+
+        delivery:
+            document.getElementById(
+                "productDelivery"
+            ).value.trim(),
+
+        images,
+
+        image:
+            images[0] || "",
+
+        status:
+            document.getElementById(
+                "productStatus"
+            ).value,
+
+        rating:0,
+
+        sold:0,
+
+        newest:true,
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+    if (editingProductId) {
+
+        const index =
+            products.findIndex(
+                item =>
+                    item.id === editingProductId
+            );
+
+
+        if (index !== -1) {
+            products[index] = product;
+        }
+
+    } else {
+
+        products.unshift(product);
+
+    }
+
+
+    saveProducts();
+
+    renderProducts();
+
+    renderStock();
+
+    updateBalance();
+
+    closeProductForm();
+
+
+    alert(
+        editingProductId
+            ? "Product updated successfully."
+            : "Product added successfully."
+    );
+
+}
+
+
+function saveProducts() {
+
+    localStorage.setItem(
+        "cassanoSellerProducts",
+        JSON.stringify(products)
+    );
+
+}
+
+
+function renderProducts() {
+
+    const grid =
+        document.getElementById(
+            "sellerProductsGrid"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "emptyProducts"
+        );
+
+
+    const search =
+        (
+            document.getElementById(
+                "productSearch"
+            )?.value || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    let list =
+        products.filter(product => {
+
+            const matchesFilter =
+                currentProductFilter === "all" ||
+                (
+                    currentProductFilter === "active" &&
+                    product.status === "Active"
+                ) ||
+                (
+                    currentProductFilter === "hidden" &&
+                    product.status === "Hidden"
+                );
+
+
+            const matchesSearch =
+                !search ||
+                product.name
+                    .toLowerCase()
+                    .includes(search) ||
+                (product.brand || "")
+                    .toLowerCase()
+                    .includes(search) ||
+                (product.category || "")
+                    .toLowerCase()
+                    .includes(search);
+
+
+            return matchesFilter &&
+                matchesSearch;
+
+        });
+
+
+    grid.innerHTML = "";
+
+
+    if (!list.length) {
+
+        empty.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    list.forEach(product => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "product-card";
+
+
+        const image =
+            product.image ||
+            "https://via.placeholder.com/500x500?text=Cassano";
+
+
+        const discount =
+            product.discount > 0
+                ? `
+                    <span
+                        style="
+                            position:absolute;
+                            top:10px;
+                            left:10px;
+                            background:var(--gold);
+                            color:#000;
+                            padding:5px 8px;
+                            border-radius:15px;
+                            font-size:9px;
+                            font-weight:bold;
+                        "
+                    >
+                        ${product.discount}% OFF
+                    </span>
+                `
+                : "";
+
+
+        const oldPrice =
+            product.oldPrice > product.price
+                ? `
+                    <span
+                        style="
+                            color:var(--muted);
+                            text-decoration:line-through;
+                            font-size:10px;
+                            margin-left:5px;
+                        "
+                    >
+                        TZS ${formatMoney(product.oldPrice)}
+                    </span>
+                `
+                : "";
+
+
+        card.innerHTML = `
+
+            <div class="product-card-image">
+
+                <img
+                    src="${image}"
+                    alt="${escapeHtml(product.name)}"
+                >
+
+                ${discount}
+
+            </div>
+
+
+            <div class="product-card-body">
+
+                <h3>
+                    ${escapeHtml(product.name)}
+                </h3>
+
+                <p>
+                    ${escapeHtml(product.brand || "No brand")}
+                    •
+                    ${escapeHtml(product.category || "Other")}
+                </p>
+
+                <div class="product-price">
+
+                    TZS ${formatMoney(product.price)}
+
+                    ${oldPrice}
+
+                </div>
+
+
+                <p>
+                    Stock:
+                    <strong>
+                        ${product.stock || 0}
+                    </strong>
+                </p>
+
+
+                <span class="status ${
+                    product.status === "Active"
+                        ? "active"
+                        : "hidden"
+                }">
+                    ${product.status}
+                </span>
+
+
+                <div
+                    class="product-actions"
+                    style="margin-top:10px;"
+                >
+
+                    <button
+                        class="btn btn-dark btn-small"
+                        onclick="editProduct('${product.id}')"
+                    >
+                        EDIT
+                    </button>
+
+                    <button
+                        class="btn ${
+                            product.status === "Active"
+                                ? "btn-danger"
+                                : "btn-success"
+                        } btn-small"
+                        onclick="toggleProductStatus('${product.id}')"
+                    >
+                        ${
+                            product.status === "Active"
+                                ? "HIDE"
+                                : "SHOW"
+                        }
+                    </button>
+
+                    <button
+                        class="btn btn-danger btn-small"
+                        onclick="deleteProduct('${product.id}')"
+                    >
+                        DELETE
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+function editProduct(id) {
+
+    const product =
+        products.find(
+            item => item.id === id
+        );
+
+
+    if (!product) return;
+
+
+    openProductForm(product);
+
+}
+
+
+function toggleProductStatus(id) {
+
+    const product =
+        products.find(
+            item => item.id === id
+        );
+
+
+    if (!product) return;
+
+
+    product.status =
+        product.status === "Active"
+            ? "Hidden"
+            : "Active";
+
+
+    saveProducts();
+
+    renderProducts();
+
+    renderStock();
+
+}
+
+
+function deleteProduct(id) {
+
+    const product =
+        products.find(
+            item => item.id === id
+        );
+
+
+    if (!product) return;
+
+
+    if (
+        !confirm(
+            `Delete "${product.name}"?`
+        )
+    ) {
+        return;
+    }
+
+
+    products =
+        products.filter(
+            item => item.id !== id
+        );
+
+
+    saveProducts();
+
+    renderProducts();
+
+    renderStock();
+
+}
+
+
+function filterProducts(type) {
+
+    currentProductFilter =
+        type;
+
+    renderProducts();
+
+}
+
+
+function updateStock(id) {
+
+    const product =
+        products.find(
+            item => item.id === id
+        );
+
+
+    if (!product) return;
+
+
+    const amount =
+        prompt(
+            "Enter new stock quantity:",
+            product.stock || 0
+        );
+
+
+    if (
+        amount === null ||
+        amount.trim() === ""
+    ) {
+        return;
+    }
+
+
+    const number =
+        Number(amount);
+
+
+    if (
+        !Number.isFinite(number) ||
+        number < 0
+    ) {
+
+        alert(
+            "Please enter a valid stock quantity."
+        );
+
+        return;
+
+    }
+
+
+    product.stock =
+        Math.floor(number);
+
+
+    saveProducts();
+
+    renderProducts();
+
+    renderStock();
+
+}
+
+
+function renderStock() {
+
+    const tbody =
+        document.getElementById(
+            "stockTable"
+        );
+
+
+    if (!tbody) return;
+
+
+    tbody.innerHTML = "";
+
+
+    if (!products.length) {
+
+        tbody.innerHTML = `
+
+            <tr>
+                <td colspan="5">
+                    No products yet.
+                </td>
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    products.forEach(product => {
+
+        tbody.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${escapeHtml(product.name)}
+                </td>
+
+                <td>
+                    ${escapeHtml(product.sku || "-")}
+                </td>
+
+                <td>
+                    ${product.stock || 0}
+                </td>
+
+                <td>
+
+                    <span class="status ${
+                        product.status === "Active"
+                            ? "active"
+                            : "hidden"
+                    }">
+                        ${product.status}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn btn-dark btn-small"
+                        onclick="updateStock('${product.id}')"
+                    >
+                        UPDATE STOCK
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================================================
+ORDERS
+========================================================= */
+
+function setOrderTab(tab) {
+
+    currentOrderTab =
+        tab;
+
+
+    document
+        .querySelectorAll(".order-tab")
+        .forEach(button => {
+
+            button.classList.remove(
+                "active"
+            );
+
+
+            if (
+                button.dataset.orderTab === tab
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+
+        });
+
+
+    renderOrders();
+
+}
+
+
+function renderOrders() {
+
+    const tbody =
+        document.getElementById(
+            "ordersTable"
+        );
+
+
+    if (!tbody) return;
+
+
+    tbody.innerHTML = "";
+
+
+    let list =
+        orders;
+
+
+    if (
+        currentOrderTab !== "all"
+    ) {
+
+        list =
+            orders.filter(
+                order =>
+                    order.status ===
+                    currentOrderTab
+            );
+
+    }
+
+
+    if (!list.length) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="7"
+                    style="text-align:center;padding:40px;color:var(--muted);">
+
+                    No orders yet.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    list.forEach(order => {
+
+        tbody.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${escapeHtml(order.id)}
+                </td>
+
+                <td>
+                    ${escapeHtml(order.customer)}
+                </td>
+
+                <td>
+                    ${escapeHtml(order.product)}
+                </td>
+
+                <td>
+                    TZS ${formatMoney(order.total)}
+                </td>
+
+                <td>
+                    ${escapeHtml(order.destination)}
+                </td>
+
+                <td>
+
+                    <span class="status ${statusClass(order.status)}">
+                        ${order.status}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn btn-dark btn-small"
+                        onclick="openOrderDetails('${order.id}')"
+                    >
+                        VIEW
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+function openOrderDetails(id) {
+
+    const order =
+        orders.find(
+            item => item.id === id
+        );
+
+
+    if (!order) return;
+
+
+    document.getElementById(
+        "orderDetails"
+    ).innerHTML = `
+
+        <div class="grid-2">
+
+            <div class="card">
+
+                <p style="color:var(--muted);font-size:10px;">
+                    ORDER ID
+                </p>
+
+                <strong>
+                    ${escapeHtml(order.id)}
+                </strong>
+
+            </div>
+
+            <div class="card">
+
+                <p style="color:var(--muted);font-size:10px;">
+                    DATE
+                </p>
+
+                <strong>
+                    ${escapeHtml(order.date)}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="card" style="margin-top:12px;">
+
+            <p style="color:var(--muted);font-size:10px;">
+                CUSTOMER
+            </p>
+
+            <strong>
+                ${escapeHtml(order.customer)}
+            </strong>
+
+            <br><br>
+
+            <p style="color:var(--muted);font-size:10px;">
+                PRODUCT
+            </p>
+
+            <strong>
+                ${escapeHtml(order.product)}
+            </strong>
+
+            <br><br>
+
+            <p style="color:var(--muted);font-size:10px;">
+                QUANTITY
+            </p>
+
+            <strong>
+                ${order.quantity}
+            </strong>
+
+            <br><br>
+
+            <p style="color:var(--muted);font-size:10px;">
+                DELIVERY DESTINATION
+            </p>
+
+            <strong>
+                ${escapeHtml(order.destination)}
+            </strong>
+
+            <br><br>
+
+            <p style="color:var(--muted);font-size:10px;">
+                PAYMENT
+            </p>
+
+            <strong>
+                ${escapeHtml(order.payment || "Pending")}
+            </strong>
+
+            <br><br>
+
+            <p style="color:var(--muted);font-size:10px;">
+                TOTAL
+            </p>
+
+            <strong style="color:var(--gold-light);">
+                TZS ${formatMoney(order.total)}
+            </strong>
+
+            <br><br>
+
+            <p style="color:var(--muted);font-size:10px;">
+                ORDER STATUS
+            </p>
+
+            <span class="status ${statusClass(order.status)}">
+                ${escapeHtml(order.status)}
+            </span>
+
+        </div>
+
+
+        <div style="display:flex;gap:8px;margin-top:15px;flex-wrap:wrap;">
+
+            <button
+                class="btn btn-gold"
+                onclick="advanceOrder('${order.id}')"
+            >
+                UPDATE STATUS
+            </button>
+
+            <button
+                class="btn btn-dark"
+                onclick="closeOrderModal()"
+            >
+                CLOSE
+            </button>
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "orderModal"
+    ).classList.add("active");
+
+}
+
+
+function closeOrderModal() {
+
+    document.getElementById(
+        "orderModal"
+    ).classList.remove("active");
+
+}
+
+
+function advanceOrder(id) {
+
+    const order =
+        orders.find(
+            item => item.id === id
+        );
+
+
+    if (!order) return;
+
+
+    const sequence = [
+        "New",
+        "Processing",
+        "Shipped",
+        "Delivered"
+    ];
+
+
+    const current =
+        sequence.indexOf(
+            order.status
+        );
+
+
+    if (
+        current >= 0 &&
+        current < sequence.length - 1
+    ) {
+
+        order.status =
+            sequence[current + 1];
+
+    } else {
+
+        alert(
+            "This order has reached its final active status."
+        );
+
+    }
+
+
+    localStorage.setItem(
+        "cassanoSellerOrders",
+        JSON.stringify(orders)
+    );
+
+
+    renderOrders();
+
+    renderSales();
+
+    updateBalance();
+
+    openOrderDetails(id);
+
+}
+
+
+/* =========================================================
+SALES
+========================================================= */
+
+let salesPeriod = "today";
+
+
+function setSalesPeriod(
+    period,
+    button
+) {
+
+    salesPeriod =
+        period;
+
+
+    document
+        .querySelectorAll(".sales-tab")
+        .forEach(item => {
+
+            item.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    button.classList.add(
+        "active"
+    );
+
+
+    renderSales();
+
+}
+
+
+function renderSales() {
+
+    let amount = 0;
+    let count = 0;
+    let quantity = 0;
+
+
+    const validOrders =
+        orders.filter(
+            order =>
+                order.status !==
+                "Cancelled"
+        );
+
+
+    if (salesPeriod === "today") {
+
+        const todayOrders =
+            validOrders.filter(
+                order =>
+                    order.date === "Today"
+            );
+
+
+        amount =
+            todayOrders.reduce(
+                (sum, order) =>
+                    sum + Number(order.total || 0),
+                0
+            );
+
+
+        count =
+            todayOrders.length;
+
+
+        quantity =
+            todayOrders.reduce(
+                (sum, order) =>
+                    sum + Number(order.quantity || 0),
+                0
+            );
+
+    }
+
+
+    if (salesPeriod === "week") {
+
+        const weekOrders =
+            validOrders.filter(
+                order =>
+                    order.date !== "6 days ago"
+            );
+
+
+        amount =
+            weekOrders.reduce(
+                (sum, order) =>
+                    sum + Number(order.total || 0),
+                0
+            );
+
+
+        count =
+            weekOrders.length;
+
+
+        quantity =
+            weekOrders.reduce(
+                (sum, order) =>
+                    sum + Number(order.quantity || 0),
+                0
+            );
+
+    }
+
+
+    if (
+        salesPeriod === "month" ||
+        salesPeriod === "year"
+    ) {
+
+        amount =
+            validOrders.reduce(
+                (sum, order) =>
+                    sum + Number(order.total || 0),
+                0
+            );
+
+
+        count =
+            validOrders.length;
+
+
+        quantity =
+            validOrders.reduce(
+                (sum, order) =>
+                    sum + Number(order.quantity || 0),
+                0
+            );
+
+    }
+
+
+    document.getElementById(
+        "salesPeriodAmount"
+    ).textContent =
+        "TZS " +
+        formatMoney(amount);
+
+
+    document.getElementById(
+        "salesOrderCount"
+    ).textContent =
+        count;
+
+
+    document.getElementById(
+        "productsSold"
+    ).textContent =
+        quantity;
+
+
+    document.getElementById(
+        "averageOrder"
+    ).textContent =
+        "TZS " +
+        formatMoney(
+            count
+                ? Math.round(amount / count)
+                : 0
+        );
+
+
+    renderSalesChart();
+
+    renderBestSelling();
+
+}
+
+
+function renderSalesChart() {
+
+    const chart =
+        document.getElementById(
+            "salesChart"
+        );
+
+
+    if (!chart) return;
+
+
+    chart.innerHTML = "";
+
+
+    if (!orders.length) {
+
+        chart.innerHTML = `
+
+            <div style="
+                width:100%;
+                color:var(--muted);
+                font-size:11px;
+                text-align:center;
+                padding-top:90px;
+            ">
+                No sales data yet.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const values = [
+        20,38,30,55,42,70,60
+    ];
+
+
+    const labels = [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+    ];
+
+
+    values.forEach(
+        (value,index) => {
+
+            chart.innerHTML += `
+
+                <div class="chart-bar-wrap">
+
+                    <div
+                        class="chart-bar"
+                        style="height:${value}%"
+                    ></div>
+
+                    <div class="chart-label">
+                        ${labels[index]}
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+
+
+function renderBestSelling() {
+
+    const box =
+        document.getElementById(
+            "bestSellingProducts"
+        );
+
+
+    if (!box) return;
+
+
+    if (!orders.length) {
+
+        box.innerHTML =
+            `<p style="color:var(--muted);font-size:11px;">
+                No sales yet.
+            </p>`;
+
+        return;
+
+    }
+
+
+    const counts = {};
+
+
+    orders.forEach(order => {
+
+        if (
+            order.status ===
+            "Cancelled"
+        ) {
+            return;
+        }
+
+
+        counts[order.product] =
+            (
+                counts[order.product] ||
+                0
+            ) +
+            Number(order.quantity || 0);
+
+    });
+
+
+    const sorted =
+        Object.entries(counts)
+            .sort(
+                (a,b) =>
+                    b[1] - a[1]
+            )
+            .slice(0,5);
+
+
+    box.innerHTML = "";
+
+
+    sorted.forEach(
+        ([name,quantity],index) => {
+
+            box.innerHTML += `
+
+                <div
+                    style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        padding:12px 0;
+                        border-bottom:1px solid rgba(255,255,255,.07);
+                    "
+                >
+
+                    <span style="font-size:11px;">
+                        ${index + 1}.
+                        ${escapeHtml(name)}
+                    </span>
+
+                    <strong
+                        style="color:var(--gold-light);font-size:11px;"
+                    >
+                        ${quantity} sold
+                    </strong>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+CHAT
+========================================================= */
+
+let selectedBuyer =
+    "Amina Hassan";
+
+
+function selectBuyer(name) {
+
+    selectedBuyer =
+        name;
+
+
+    document.getElementById(
+        "chatBuyer"
+    ).textContent =
+        name;
+
+
+    document
+        .querySelectorAll(".buyer")
+        .forEach(item => {
+
+            item.classList.remove(
+                "active"
+            );
+
+
+            if (
+                item.querySelector(
+                    ".buyer-name"
+                )?.textContent === name
+            ) {
+
+                item.classList.add(
+                    "active"
+                );
+
+            }
+
+        });
+
+
+    const stored =
+        JSON.parse(
+            localStorage.getItem(
+                "cassanoSellerChats"
+            ) || "{}"
+        );
+
+
+    const messages =
+        stored[name] ||
+        [
+            {
+                sender:"buyer",
+                text:"Hello, I have a question about your product."
+            },
+            {
+                sender:"seller",
+                text:"Sure, how can I help you?"
+            }
+        ];
+
+
+    renderChatMessages(
+        messages
+    );
+
+}
+
+
+function renderChatMessages(messages) {
+
+    const box =
+        document.getElementById(
+            "messages"
+        );
+
+
+    box.innerHTML = "";
+
+
+    messages.forEach(message => {
+
+        const div =
+            document.createElement("div");
+
+
+        div.className =
+            "message " +
+            (
+                message.sender === "seller"
+                    ? "seller"
+                    : "buyer"
+            );
+
+
+        div.textContent =
+            message.text;
+
+
+        box.appendChild(div);
+
+    });
+
+
+    box.scrollTop =
+        box.scrollHeight;
+
+}
+
+
+function sendMessage() {
+
+    if (!chatOn) {
+
+        alert(
+            "Buyer chat is currently disabled in Settings."
+        );
+
+        return;
+
+    }
+
+
+    const input =
+        document.getElementById(
+            "chatMessage"
+        );
+
+
+    const message =
+        input.value.trim();
+
+
+    if (!message) return;
+
+
+    const stored =
+        JSON.parse(
+            localStorage.getItem(
+                "cassanoSellerChats"
+            ) || "{}"
+        );
+
+
+    if (!stored[selectedBuyer]) {
+
+        stored[selectedBuyer] = [
+            {
+                sender:"buyer",
+                text:"Hello, I have a question about your product."
+            }
+        ];
+
+    }
+
+
+    stored[selectedBuyer].push({
+
+        sender:"seller",
+        text:message
+
+    });
+
+
+    localStorage.setItem(
+        "cassanoSellerChats",
+        JSON.stringify(stored)
+    );
+
+
+    renderChatMessages(
+        stored[selectedBuyer]
+    );
+
+
+    input.value = "";
+
+}
+
+
+/* =========================================================
+WITHDRAWAL
+========================================================= */
+
+const mobileNetworks = {
+
+    tanzania: [
+        "M-Pesa",
+        "Mixx by Yas",
+        "Airtel Money",
+        "HaloPesa",
+        "AzamPesa",
+        "EzyPesa"
+    ],
+
+    kenya: [
+        "M-Pesa",
+        "Airtel Money",
+        "T-Kash",
+        "Equitel"
+    ],
+
+    uganda: [
+        "MTN Mobile Money",
+        "Airtel Money"
+    ],
+
+    rwanda: [
+        "MTN MoMo",
+        "Airtel Money"
+    ],
+
+    burundi: [
+        "Lumicash",
+        "EcoCash"
+    ],
+
+    "south-sudan": [
+        "MTN Mobile Money",
+        "Zain Cash"
+    ],
+
+    ethiopia: [
+        "Telebirr",
+        "M-Pesa"
+    ],
+
+    somalia: [
+        "EVC Plus",
+        "ZAAD",
+        "Sahal"
+    ],
+
+    djibouti: [
+        "D-Money"
+    ],
+
+    eritrea: [
+        "Mobile Money / Provider"
+    ],
+
+    mozambique: [
+        "M-Pesa",
+        "e-Mola",
+        "mKesh"
+    ],
+
+    other: [
+        "Mobile Money"
+    ]
+
+};
+
+
+const banks = {
+
+    tanzania: [
+        "NMB Bank",
+        "NBC",
+        "CRDB Bank",
+        "Exim Bank Tanzania",
+        "Equity Bank Tanzania",
+        "People's Bank of Zanzibar (PBZ)",
+        "Absa Bank Tanzania",
+        "Stanbic Bank Tanzania",
+        "KCB Bank Tanzania",
+        "NCBA Bank Tanzania",
+        "Access Bank Tanzania",
+        "I&M Bank Tanzania",
+        "Bank of Africa Tanzania",
+        "Ecobank Tanzania",
+        "UBA Tanzania",
+        "DTB Tanzania",
+        "Azania Bank",
+        "Amana Bank",
+        "DCB Commercial Bank",
+        "Mkombozi Commercial Bank",
+        "Tanzania Commercial Bank",
+        "International Commercial Bank Tanzania",
+        "Standard Chartered Tanzania",
+        "Bank of Baroda Tanzania",
+        "Bank of India Tanzania",
+        "Canara Bank Tanzania",
+        "Citibank Tanzania",
+        "Guaranty Trust Bank Tanzania",
+        "Mwanga Hakika Bank",
+        "Maendeleo Bank",
+        "Mwalimu Commercial Bank",
+        "Habib African Bank"
+    ],
+
+    kenya: [
+        "KCB Bank Kenya",
+        "Equity Bank Kenya",
+        "Co-operative Bank of Kenya",
+        "NCBA Bank Kenya",
+        "Absa Bank Kenya",
+        "Stanbic Bank Kenya",
+        "Standard Chartered Kenya",
+        "I&M Bank Kenya",
+        "DTB Kenya",
+        "Family Bank",
+        "Bank of Africa Kenya",
+        "National Bank of Kenya"
+    ],
+
+    uganda: [
+        "Stanbic Bank Uganda",
+        "Centenary Bank",
+        "Absa Bank Uganda",
+        "Standard Chartered Uganda",
+        "Bank of Baroda Uganda",
+        "DFCU Bank",
+        "Equity Bank Uganda"
+    ],
+
+    rwanda: [
+        "Bank of Kigali",
+        "I&M Bank Rwanda",
+        "Equity Bank Rwanda",
+        "Access Bank Rwanda",
+        "Ecobank Rwanda"
+    ],
+
+    burundi: [
+        "CRDB Bank Burundi",
+        "Bank of Africa Burundi",
+        "BCB",
+        "Ecobank Burundi"
+    ],
+
+    "south-sudan": [
+        "KCB Bank South Sudan",
+        "Equity Bank South Sudan",
+        "Stanbic Bank South Sudan"
+    ],
+
+    ethiopia: [
+        "Commercial Bank of Ethiopia",
+        "Awash Bank",
+        "Dashen Bank",
+        "Bank of Abyssinia",
+        "Wegagen Bank"
+    ],
+
+    somalia: [
+        "Premier Bank",
+        "Salaam Somali Bank",
+        "Dahabshiil Bank"
+    ],
+
+    djibouti: [
+        "BCIMR",
+        "CAC International Bank"
+    ],
+
+    eritrea: [
+        "Commercial Bank of Eritrea",
+        "Housing and Commerce Bank of Eritrea"
+    ],
+
+    mozambique: [
+        "Millennium BIM",
+        "BCI",
+        "Standard Bank Mozambique",
+        "Absa Bank Mozambique",
+        "Moza Banco"
+    ],
+
+    other: [
+        "Bank Transfer"
+    ]
+
+};
+
+
+function openWithdrawalCategory(type) {
+
+    closeWithdrawalPanels();
+
+
+    if (type === "mobile") {
+
+        document.getElementById(
+            "mobileWithdrawalPanel"
+        ).classList.add("active");
+
+    }
+
+
+    if (type === "bank") {
+
+        document.getElementById(
+            "bankWithdrawalPanel"
+        ).classList.add("active");
+
+    }
+
+}
+
+
+function closeWithdrawalPanels() {
+
+    document.getElementById(
+        "mobileWithdrawalPanel"
+    ).classList.remove("active");
+
+
+    document.getElementById(
+        "bankWithdrawalPanel"
+    ).classList.remove("active");
+
+}
+
+
+function loadMobileNetworks() {
+
+    const country =
+        document.getElementById(
+            "mobileCountry"
+        ).value;
+
+
+    const select =
+        document.getElementById(
+            "mobileNetwork"
+        );
+
+
+    select.innerHTML =
+        `<option value="">Select Network</option>`;
+
+
+    const list =
+        mobileNetworks[country] ||
+        mobileNetworks.other;
+
+
+    list.forEach(network => {
+
+        const option =
+            document.createElement("option");
+
+
+        option.value =
+            network;
+
+
+        option.textContent =
+            network;
+
+
+        select.appendChild(
+            option
+        );
+
+    });
+
+}
+
+
+function loadBanks() {
+
+    const country =
+        document.getElementById(
+            "bankCountry"
+        ).value;
+
+
+    const select =
+        document.getElementById(
+            "bankName"
+        );
+
+
+    select.innerHTML =
+        `<option value="">Select Bank</option>`;
+
+
+    const list =
+        banks[country] ||
+        banks.other;
+
+
+    list.forEach(bank => {
+
+        const option =
+            document.createElement("option");
+
+
+        option.value =
+            bank;
+
+
+        option.textContent =
+            bank;
+
+
+        select.appendChild(
+            option
+        );
+
+    });
+
+}
+
+
+function saveMobilePayment() {
+
+    const country =
+        document.getElementById(
+            "mobileCountry"
+        ).value;
+
+
+    const network =
+        document.getElementById(
+            "mobileNetwork"
+        ).value;
+
+
+    const phone =
+        document.getElementById(
+            "mobilePhone"
+        ).value.trim();
+
+
+    const name =
+        document.getElementById(
+            "mobileAccountName"
+        ).value.trim();
+
+
+    const amount =
+        Number(
+            document.getElementById(
+                "mobileWithdrawAmount"
+            ).value
+        );
+
+
+    if (!country) {
+        alert("Please select your country.");
+        return;
+    }
+
+
+    if (!network) {
+        alert("Please select your mobile network.");
+        return;
+    }
+
+
+    if (!phone) {
+        alert("Please enter your phone number.");
+        return;
+    }
+
+
+    if (!name) {
+        alert("Please enter account name.");
+        return;
+    }
+
+
+    if (!amount || amount <= 0) {
+        alert("Please enter a valid withdrawal amount.");
+        return;
+    }
+
+
+    createWithdrawalRecord(
+        getCountryName(country),
+        network,
+        phone,
+        name,
+        amount
+    );
+
+}
+
+
+function saveBankPayment() {
+
+    const country =
+        document.getElementById(
+            "bankCountry"
+        ).value;
+
+
+    const bank =
+        document.getElementById(
+            "bankName"
+        ).value;
+
+
+    const name =
+        document.getElementById(
+            "bankAccountName"
+        ).value.trim();
+
+
+    const account =
+        document.getElementById(
+            "bankAccountNumber"
+        ).value.trim();
+
+
+    const amount =
+        Number(
+            document.getElementById(
+                "bankWithdrawAmount"
+            ).value
+        );
+
+
+    if (!country) {
+        alert("Please select your country.");
+        return;
+    }
+
+
+    if (!bank) {
+        alert("Please select your bank.");
+        return;
+    }
+
+
+    if (!name) {
+        alert("Please enter account name.");
+        return;
+    }
+
+
+    if (!account) {
+        alert("Please enter account number.");
+        return;
+    }
+
+
+    if (!amount || amount <= 0) {
+        alert("Please enter a valid withdrawal amount.");
+        return;
+    }
+
+
+    createWithdrawalRecord(
+        getCountryName(country),
+        bank,
+        account,
+        name,
+        amount
+    );
+
+}
+
+
+function createWithdrawalRecord(
+    country,
+    method,
+    account,
+    accountName,
+    amount
+) {
+
+    const available =
+        getAvailableBalance();
+
+
+    if (amount > available) {
+
+        alert(
+            "The withdrawal amount is greater than your available balance."
+        );
+
+        return;
+
+    }
+
+
+    const record = {
+
+        id:
+            "WD-" +
+            Date.now(),
+
+        date:
+            new Date().toLocaleDateString(),
+
+        country,
+
+        method,
+
+        account:
+            maskAccount(account),
+
+        accountName,
+
+        amount,
+
+        status:
+            "Pending"
+
+    };
+
+
+    withdrawals.unshift(
+        record
+    );
+
+
+    localStorage.setItem(
+        "cassanoWithdrawals",
+        JSON.stringify(withdrawals)
+    );
+
+
+    renderWithdrawHistory();
+
+
+    document.getElementById(
+        "mobileWithdrawAmount"
+    ).value = "";
+
+
+    document.getElementById(
+        "bankWithdrawAmount"
+    ).value = "";
+
+
+    closeWithdrawalPanels();
+
+
+    alert(
+        "Withdrawal request submitted successfully. It is now pending review."
+    );
+
+}
+
+
+function renderWithdrawHistory() {
+
+    const tbody =
+        document.getElementById(
+            "withdrawHistory"
+        );
+
+
+    if (!tbody) return;
+
+
+    tbody.innerHTML = "";
+
+
+    if (!withdrawals.length) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+                    No withdrawal requests yet.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    withdrawals.forEach(item => {
+
+        tbody.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${escapeHtml(item.date)}
+                </td>
+
+                <td>
+                    ${escapeHtml(item.country)}
+                </td>
+
+                <td>
+                    ${escapeHtml(item.method)}
+                </td>
+
+                <td>
+                    ${escapeHtml(item.account)}
+                </td>
+
+                <td>
+                    TZS ${formatMoney(item.amount)}
+                </td>
+
+                <td>
+
+                    <span class="status processing">
+                        ${escapeHtml(item.status)}
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================================================
+PROFILE
+========================================================= */
+
+function loadProfile() {
+
+    profile =
+        JSON.parse(
+            localStorage.getItem(
+                "cassanoSellerProfile"
+            ) || "{}"
+        );
+
+
+    const registrationData = {
+
+        business:
+            profile.business ||
+            sellerBusiness,
+
+        owner:
+            profile.owner ||
+            localStorage.getItem(
+                "cassanoSellerFullName"
+            ) ||
+            "",
+
+        phone:
+            profile.phone ||
+            localStorage.getItem(
+                "cassanoSellerPhone"
+            ) ||
+            "",
+
+        email:
+            profile.email ||
+            localStorage.getItem(
+                "cassanoSellerEmail"
+            ) ||
+            "",
+
+        location:
+            profile.location ||
+            localStorage.getItem(
+                "cassanoSellerRegion"
+            ) ||
+            "Dar es Salaam",
+
+        category:
+            profile.category ||
+            localStorage.getItem(
+                "cassanoSellerCategory"
+            ) ||
+            "Other"
+
+    };
+
+
+    document.getElementById(
+        "profileBusiness"
+    ).value =
+        registrationData.business;
+
+
+    document.getElementById(
+        "profileOwner"
+    ).value =
+        registrationData.owner;
+
+
+    document.getElementById(
+        "profilePhone"
+    ).value =
+        registrationData.phone;
+
+
+    document.getElementById(
+        "profileEmail"
+    ).value =
+        registrationData.email;
+
+
+    document.getElementById(
+        "profileLocation"
+    ).value =
+        registrationData.location;
+
+
+    document.getElementById(
+        "profileCategory"
+    ).value =
+        registrationData.category;
+
+
+    document.getElementById(
+        "profileBusinessName"
+    ).textContent =
+        registrationData.business;
+
+
+    const savedPhoto =
+        localStorage.getItem(
+            "cassanoSellerProfilePhoto"
+        );
+
+
+    const avatar =
+        document.getElementById(
+            "profileAvatar"
+        );
+
+
+    if (savedPhoto) {
+
+        avatar.innerHTML =
+            `<img src="${savedPhoto}" alt="Seller">`;
+
+    } else {
+
+        const first =
+            registrationData.business
+                .charAt(0)
+                .toUpperCase();
+
+
+        avatar.textContent =
+            first || "C";
+
+    }
+
+}
+
+
+function saveProfile() {
+
+    profile = {
+
+        business:
+            document.getElementById(
+                "profileBusiness"
+            ).value.trim(),
+
+        owner:
+            document.getElementById(
+                "profileOwner"
+            ).value.trim(),
+
+        phone:
+            document.getElementById(
+                "profilePhone"
+            ).value.trim(),
+
+        email:
+            document.getElementById(
+                "profileEmail"
+            ).value.trim(),
+
+        location:
+            document.getElementById(
+                "profileLocation"
+            ).value.trim(),
+
+        category:
+            document.getElementById(
+                "profileCategory"
+            ).value
+
+    };
+
+
+    if (profile.business) {
+
+        sellerBusiness =
+            profile.business;
+
+
+        localStorage.setItem(
+            "cassanoSellerBusiness",
+            sellerBusiness
+        );
+
+    }
+
+
+    localStorage.setItem(
+        "cassanoSellerProfile",
+        JSON.stringify(profile)
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerFullName",
+        profile.owner
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerPhone",
+        profile.phone
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerEmail",
+        profile.email
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerRegion",
+        profile.location
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerCategory",
+        profile.category
+    );
+
+
+    loadBusinessName();
+
+    loadProfile();
+
+
+    alert(
+        "Seller profile saved successfully."
+    );
+
+}
+
+
+function changeProfilePhoto(event) {
+
+    const file =
+        event.target.files[0];
+
+
+    if (!file) return;
+
+
+    if (
+        !file.type.startsWith("image/")
+    ) {
+
+        alert(
+            "Please select an image file."
+        );
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(e) {
+
+            localStorage.setItem(
+                "cassanoSellerProfilePhoto",
+                e.target.result
+            );
+
+
+            loadProfile();
+
+        };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function removeProfilePhoto() {
+
+    localStorage.removeItem(
+        "cassanoSellerProfilePhoto"
+    );
+
+
+    loadProfile();
+
+}
+
+
+/* =========================================================
+AGREEMENT
+========================================================= */
+
+function acceptAgreement() {
+
+    const checkbox =
+        document.getElementById(
+            "agreementCheckbox"
+        );
+
+
+    if (!checkbox.checked) {
+
+        alert(
+            "Please read and accept the Seller Agreement first."
+        );
+
+        return;
+
+    }
+
+
+    const agreement = {
+
+        accepted:true,
+
+        version:"1.0",
+
+        commission:"10%",
+
+        date:
+            new Date().toISOString()
+
+    };
+
+
+    localStorage.setItem(
+        "cassanoSellerAgreement",
+        JSON.stringify(agreement)
+    );
+
+
+    updateAgreementStatus();
+
+
+    alert(
+        "Seller Agreement accepted successfully."
+    );
+
+}
+
+
+function updateAgreementStatus() {
+
+    const data =
+        JSON.parse(
+            localStorage.getItem(
+                "cassanoSellerAgreement"
+            ) || "null"
+        );
+
+
+    const checkbox =
+        document.getElementById(
+            "agreementCheckbox"
+        );
+
+
+    const status =
+        document.getElementById(
+            "agreementStatus"
+        );
+
+
+    if (
+        data &&
+        data.accepted
+    ) {
+
+        checkbox.checked =
+            true;
+
+
+        status.innerHTML =
+            `
+                <span style="color:var(--success);">
+                    ✓ Agreement accepted
+                </span>
+                <br>
+                Version ${escapeHtml(data.version)}
+                •
+                10% commission
+                •
+                ${new Date(data.date).toLocaleDateString()}
+            `;
+
+    } else {
+
+        checkbox.checked =
+            false;
+
+
+        status.textContent =
+            "Agreement not accepted yet.";
+
+    }
+
+}
+
+
+/* =========================================================
+SETTINGS
+========================================================= */
+
+function changeTheme(value) {
+
+    document.body.classList.remove(
+        "light",
+        "blue"
+    );
+
+
+    if (value === "light") {
+
+        document.body.classList.add(
+            "light"
+        );
+
+    }
+
+
+    if (value === "blue") {
+
+        document.body.classList.add(
+            "blue"
+        );
+
+    }
+
+
+    localStorage.setItem(
+        "cassanoTheme",
+        value
+    );
+
+}
+
+
+function applySavedTheme() {
+
+    const saved =
+        localStorage.getItem(
+            "cassanoTheme"
+        ) || "dark";
+
+
+    changeThemeWithoutStorage(
+        saved
+    );
+
+
+    const select =
+        document.getElementById(
+            "themeSetting"
+        );
+
+
+    if (select) {
+
+        select.value =
+            saved;
+
+    }
+
+}
+
+
+function changeThemeWithoutStorage(
+    value
+) {
+
+    document.body.classList.remove(
+        "light",
+        "blue"
+    );
+
+
+    if (value === "light") {
+
+        document.body.classList.add(
+            "light"
+        );
+
+    }
+
+
+    if (value === "blue") {
+
+        document.body.classList.add(
+            "blue"
+        );
+
+    }
+
+}
+
+
+let notificationsOn =
+    localStorage.getItem(
+        "cassanoNotifications"
+    ) !== "off";
+
+
+let chatOn =
+    localStorage.getItem(
+        "cassanoChatEnabled"
+    ) !== "off";
+
+
+function toggleNotification() {
+
+    notificationsOn =
+        !notificationsOn;
+
+
+    localStorage.setItem(
+        "cassanoNotifications",
+        notificationsOn
+            ? "on"
+            : "off"
+    );
+
+
+    const button =
+        document.getElementById(
+            "notificationToggle"
+        );
+
+
+    button.textContent =
+        notificationsOn
+            ? "ON"
+            : "OFF";
+
+
+    button.className =
+        notificationsOn
+            ? "btn btn-success"
+            : "btn btn-danger";
+
+}
+
+
+function toggleChatSetting() {
+
+    chatOn =
+        !chatOn;
+
+
+    localStorage.setItem(
+        "cassanoChatEnabled",
+        chatOn
+            ? "on"
+            : "off"
+    );
+
+
+    const button =
+        document.getElementById(
+            "chatToggle"
+        );
+
+
+    button.textContent =
+        chatOn
+            ? "ON"
+            : "OFF";
+
+
+    button.className =
+        chatOn
+            ? "btn btn-success"
+            : "btn btn-danger";
+
+}
+
+
+function applySettingButtons() {
+
+    const notificationButton =
+        document.getElementById(
+            "notificationToggle"
+        );
+
+
+    const chatButton =
+        document.getElementById(
+            "chatToggle"
+        );
+
+
+    notificationButton.textContent =
+        notificationsOn
+            ? "ON"
+            : "OFF";
+
+
+    notificationButton.className =
+        notificationsOn
+            ? "btn btn-success"
+            : "btn btn-danger";
+
+
+    chatButton.textContent =
+        chatOn
+            ? "ON"
+            : "OFF";
+
+
+    chatButton.className =
+        chatOn
+            ? "btn btn-success"
+            : "btn btn-danger";
+
+}
+
+
+/* =========================================================
+BALANCE
+========================================================= */
+
+function getAvailableBalance() {
+
+    const totalSales =
+        orders
+            .filter(
+                order =>
+                    order.status !==
+                    "Cancelled"
+            )
+            .reduce(
+                (sum, order) =>
+                    sum +
+                    Number(
+                        order.total || 0
+                    ),
+                0
+            );
+
+
+    const pending =
+        orders
+            .filter(
+                order =>
+                    order.status ===
+                    "Processing"
+            )
+            .reduce(
+                (sum, order) =>
+                    sum +
+                    Number(
+                        order.total || 0
+                    ),
+                0
+            );
+
+
+    const withdrawn =
+        withdrawals
+            .filter(
+                item =>
+                    item.status !==
+                    "Rejected"
+            )
+            .reduce(
+                (sum, item) =>
+                    sum +
+                    Number(
+                        item.amount || 0
+                    ),
+                0
+            );
+
+
+    return Math.max(
+        0,
+        totalSales -
+        pending -
+        withdrawn
+    );
+
+}
+
+
+function updateBalance() {
+
+    const totalSales =
+        orders
+            .filter(
+                order =>
+                    order.status !==
+                    "Cancelled"
+            )
+            .reduce(
+                (sum, order) =>
+                    sum +
+                    Number(
+                        order.total || 0
+                    ),
+                0
+            );
+
+
+    const pending =
+        orders
+            .filter(
+                order =>
+                    order.status ===
+                    "Processing"
+            )
+            .reduce(
+                (sum, order) =>
+                    sum +
+                    Number(
+                        order.total || 0
+                    ),
+                0
+            );
+
+
+    const available =
+        getAvailableBalance();
+
+
+    document.getElementById(
+        "dashTotalSales"
+    ).textContent =
+        "TZS " +
+        formatMoney(totalSales);
+
+
+    document.getElementById(
+        "dashBalance"
+    ).textContent =
+        "TZS " +
+        formatMoney(available);
+
+
+    document.getElementById(
+        "dashPending"
+    ).textContent =
+        "TZS " +
+        formatMoney(pending);
+
+
+    document.getElementById(
+        "withdrawBalance"
+    ).textContent =
+        "TZS " +
+        formatMoney(available);
+
+
+    document.getElementById(
+        "dashProductCount"
+    ).textContent =
+        products.length;
+
+}
+
+
+/* =========================================================
+LOGOUT
+========================================================= */
+
+function sellerLogout() {
+
+    const confirmLogout =
+        confirm(
+            "Are you sure you want to log out?"
+        );
+
+
+    if (!confirmLogout) return;
+
+
+    localStorage.removeItem(
+        "cassanoSellerLoggedIn"
+    );
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+/* =========================================================
+HELPERS
+========================================================= */
+
+function formatMoney(number) {
+
+    return Number(
+        number || 0
+    ).toLocaleString(
+        "en-US"
+    );
+
+}
+
+
+function maskAccount(account) {
+
+    const value =
+        String(account);
+
+
+    if (value.length <= 4) {
+
+        return value;
+
+    }
+
+
+    return (
+        "••••" +
+        value.slice(-4)
+    );
+
+}
+
+
+function getCountryName(value) {
+
+    const names = {
+
+        tanzania:"Tanzania",
+        kenya:"Kenya",
+        uganda:"Uganda",
+        rwanda:"Rwanda",
+        burundi:"Burundi",
+        "south-sudan":"South Sudan",
+        ethiopia:"Ethiopia",
+        somalia:"Somalia",
+        djibouti:"Djibouti",
+        eritrea:"Eritrea",
+        mozambique:"Mozambique",
+        other:"Other Country"
+
+    };
+
+
+    return names[value] ||
+        value;
+
+}
+
+
+function statusClass(status) {
+
+    return String(
+        status || ""
+    )
+    .toLowerCase()
+    .replace(
+        /\s+/g,
+        "-"
+    );
+
+}
+
+
+function escapeHtml(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+THEME SYNC
+========================================================= */
+
+window.addEventListener(
+    "storage",
+    function(event) {
+
+        if (
+            event.key ===
+            "cassanoTheme"
+        ) {
+
+            applySavedTheme();
+
+        }
+
+
+        if (
+            event.key ===
+            "cassanoSellerBusiness"
+        ) {
+
+            sellerBusiness =
+                localStorage.getItem(
+                    "cassanoSellerBusiness"
+                ) ||
+                "Your Business";
+
+            loadBusinessName();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+INITIALIZE
+========================================================= */
+
+applySavedTheme();
+
+loadBusinessName();
+
+renderProducts();
+
+renderStock();
+
+renderOrders();
+
+renderSales();
+
+renderWithdrawHistory();
+
+loadProfile();
+
+updateAgreementStatus();
+
+applySettingButtons();
+
+updateBalance();
+function toggleMobileSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+
+    if (sidebar) {
+        sidebar.classList.toggle("mobile-open");
+    }
+}
+function toggleMobileSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+
+    if (!sidebar) return;
+
+    sidebar.classList.toggle("mobile-open");
+}
+
+
+/* CLOSE SELLER MENU AFTER SELECTING ANY MENU ITEM */
+document.addEventListener("click", function (event) {
+
+    const sidebar = document.querySelector(".sidebar");
+
+    if (!sidebar) return;
+
+    const menuItem = event.target.closest(
+        ".sidebar a, .sidebar button, .side-link"
+    );
+
+    if (menuItem && window.innerWidth <= 650) {
+        sidebar.classList.remove("mobile-open");
+    }
+
+});
+
+</script>
+
+</body>
+</html>

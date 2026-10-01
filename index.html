@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cassano Marketplace</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #050505;
+            color: white;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        .splash {
+            text-align: center;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .splash img {
+            width: 250px;
+            max-width: 70vw;
+            animation: logoPulse 2.5s ease-in-out infinite;
+        }
+
+        .loading {
+            margin-top: 25px;
+            color: #D4AF37;
+            font-size: 13px;
+            letter-spacing: 3px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes logoPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.06);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="splash">
+        <img src="./ONLY C.png" alt="Cassano Marketplace Logo">
+        <div class="loading">CASSANO MARKETPLACE</div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = "marketplace.html";
+        }, 3000);
+    </script>
+
+</body>
+</html>

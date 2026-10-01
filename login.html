@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cassano Marketplace | Seller Login</title>
+
+<style>
+
+/* =========================================================
+   CASSANO MARKETPLACE — SELLER LOGIN
+   ========================================================= */
+
+:root {
+    --gold: #D4AF37;
+    --gold-light: #f3d77a;
+
+    --black: #050505;
+    --dark: #0c0c0c;
+    --dark2: #131313;
+    --card: #171717;
+
+    --text: #ffffff;
+    --muted: #a5a5a5;
+
+    --border: rgba(212,175,55,.25);
+
+    --danger: #ff5c5c;
+    --success: #55d98a;
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: var(--black);
+    color: var(--text);
+
+    transition:
+        background .3s ease,
+        color .3s ease;
+
+    overflow-x: hidden;
+}
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.login-page {
+    width: 100%;
+    min-height: 100vh;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 20px;
+
+    overflow: hidden;
+}
+
+.login-page::before {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    top: -250px;
+    left: -250px;
+
+    background: rgba(212,175,55,.07);
+
+    border-radius: 50%;
+
+    filter: blur(5px);
+
+    pointer-events: none;
+}
+
+.login-page::after {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    bottom: -300px;
+    right: -250px;
+
+    background: rgba(212,175,55,.05);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+/* =========================================================
+   LOGIN CARD
+   ========================================================= */
+
+.login-container {
+    width: 100%;
+    max-width: 450px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.login-card {
+    width: 100%;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 22px;
+
+    padding: 38px;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.55);
+
+    transition:
+        background .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+}
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.logo-wrapper {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+.logo {
+    width: 75px;
+    height: 75px;
+
+    object-fit: contain;
+
+    display: block;
+
+    border-radius: 16px;
+}
+
+/* =========================================================
+   TITLES
+   ========================================================= */
+
+.login-title {
+    text-align: center;
+
+    font-size: 27px;
+    font-weight: 700;
+
+    letter-spacing: .5px;
+
+    margin-bottom: 8px;
+
+    color: var(--text);
+}
+
+.login-title span {
+    color: var(--gold);
+}
+
+.login-subtitle {
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    margin-bottom: 30px;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: var(--muted);
+
+    text-transform: uppercase;
+}
+
+.input-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+.form-group input {
+    width: 100%;
+
+    height: 52px;
+
+    padding: 0 15px;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    outline: none;
+
+    background: var(--dark2);
+
+    color: var(--text);
+
+    font-size: 14px;
+
+    transition:
+        border-color .25s ease,
+        box-shadow .25s ease,
+        background .25s ease;
+}
+
+.form-group input::placeholder {
+    color: #777;
+}
+
+.form-group input:focus {
+    border-color: var(--gold);
+
+    box-shadow:
+        0 0 0 3px rgba(212,175,55,.08);
+}
+
+/* =========================================================
+   PASSWORD
+   ========================================================= */
+
+.password-input {
+    padding-right: 52px !important;
+}
+
+.password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 14px;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    cursor: pointer;
+
+    font-size: 17px;
+
+    padding: 5px;
+}
+
+.password-toggle:hover {
+    color: var(--gold);
+}
+
+/* =========================================================
+   OPTIONS
+   ========================================================= */
+
+.form-options {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 24px;
+}
+
+.remember {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.remember input {
+    width: 15px;
+    height: 15px;
+
+    accent-color: var(--gold);
+
+    cursor: pointer;
+}
+
+.forgot {
+    color: var(--gold);
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: color .2s ease;
+}
+
+.forgot:hover {
+    color: var(--gold-light);
+}
+
+/* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
+
+.login-button {
+    width: 100%;
+
+    height: 53px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--gold);
+
+    color: #000;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    letter-spacing: .5px;
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+}
+
+.login-button:hover {
+    background: var(--gold-light);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 25px rgba(212,175,55,.18);
+}
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+.message {
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 12px 14px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+.message.error {
+    display: block;
+
+    background: rgba(255,92,92,.08);
+
+    border: 1px solid rgba(255,92,92,.25);
+
+    color: #ff8585;
+}
+
+.message.success {
+    display: block;
+
+    background: rgba(85,217,138,.08);
+
+    border: 1px solid rgba(85,217,138,.25);
+
+    color: #70e8a0;
+}
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.divider {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin: 27px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: rgba(255,255,255,.09);
+}
+
+.divider span {
+    color: #777;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+/* =========================================================
+   REGISTER
+   ========================================================= */
+
+.register-text {
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-bottom: 18px;
+}
+
+.register-link {
+    color: var(--gold);
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.register-link:hover {
+    color: var(--gold-light);
+}
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.back-button {
+    width: 100%;
+
+    height: 47px;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    background: transparent;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        color .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.back-button:hover {
+    color: var(--text);
+
+    border-color: var(--gold);
+
+    background: rgba(212,175,55,.05);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.login-footer {
+    text-align: center;
+
+    margin-top: 22px;
+
+    color: #666;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+.login-footer span {
+    color: var(--gold);
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading {
+    display: none;
+
+    width: 17px;
+    height: 17px;
+
+    margin-right: 8px;
+
+    vertical-align: middle;
+
+    border: 2px solid rgba(0,0,0,.25);
+
+    border-top-color: #000;
+
+    border-radius: 50%;
+
+    animation: spin .7s linear infinite;
+}
+
+.login-button.loading-active .loading {
+    display: inline-block;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+body.light {
+    --black: #f4f4f4;
+    --dark: #ffffff;
+    --dark2: #eeeeee;
+    --card: #ffffff;
+
+    --text: #111111;
+    --muted: #666666;
+
+    --border: rgba(0,0,0,.12);
+
+    background: #f4f4f4;
+    color: #111111;
+}
+
+body.light .login-page::before {
+    background: rgba(212,175,55,.08);
+}
+
+body.light .login-page::after {
+    background: rgba(0,0,0,.03);
+}
+
+body.light .login-card {
+    background: #ffffff;
+
+    border-color: rgba(0,0,0,.12);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.12);
+}
+
+body.light .form-group input {
+    background: #ffffff;
+
+    color: #111111;
+
+    border-color: #ccc;
+}
+
+body.light .form-group input::placeholder {
+    color: #888;
+}
+
+body.light .password-toggle {
+    color: #666;
+}
+
+body.light .divider::before,
+body.light .divider::after {
+    background: rgba(0,0,0,.12);
+}
+
+body.light .back-button {
+    border-color: #ccc;
+
+    color: #555;
+}
+
+body.light .back-button:hover {
+    background: #f5f5f5;
+
+    color: #111;
+}
+
+body.light .login-footer {
+    color: #777;
+}
+
+/* =========================================================
+   LUXURY BLUE MODE
+========================================================= */
+
+body.blue {
+    --black: #07111f;
+    --dark: #0a1626;
+    --dark2: #102033;
+    --card: #0d1b2a;
+
+    --text: #ffffff;
+    --muted: #aab8c5;
+
+    --border: rgba(212,175,55,.28);
+
+    background: #07111f;
+    color: #ffffff;
+}
+
+body.blue .login-page::before {
+    background: rgba(212,175,55,.05);
+}
+
+body.blue .login-page::after {
+    background: rgba(20,70,120,.12);
+}
+
+body.blue .login-card {
+    background: #0d1b2a;
+
+    border-color: rgba(212,175,55,.28);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.55);
+}
+
+body.blue .form-group input {
+    background: #102337;
+
+    border-color: #2b435b;
+
+    color: white;
+}
+
+body.blue .form-group input::placeholder {
+    color: #8393a2;
+}
+
+body.blue .password-toggle {
+    color: #aab8c5;
+}
+
+body.blue .divider::before,
+body.blue .divider::after {
+    background: rgba(148,170,195,.16);
+}
+
+body.blue .back-button {
+    background: #102337;
+
+    border-color: #2b435b;
+
+    color: #aab8c5;
+}
+
+body.blue .back-button:hover {
+    border-color: var(--gold);
+
+    color: white;
+
+    background: #13283d;
+}
+
+body.blue .login-footer {
+    color: #718496;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .login-page {
+        padding: 20px 15px;
+    }
+
+    .login-card {
+        padding: 28px 22px;
+
+        border-radius: 18px;
+    }
+
+    .login-title {
+        font-size: 24px;
+    }
+
+    .form-options {
+        flex-direction: row;
+
+        align-items: center;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .login-card {
+        padding: 25px 18px;
+    }
+
+    .login-title {
+        font-size: 22px;
+    }
+
+    .form-options {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <!-- LOGO -->
+            <div class="logo-wrapper">
+                <img
+                    src="./ONLY C.png"
+                    alt="Cassano Marketplace"
+                    class="logo"
+                >
+            </div>
+
+            <!-- TITLE -->
+            <h1 class="login-title">
+                Seller <span>Login</span>
+            </h1>
+
+            <p class="login-subtitle">
+                Sign in to your Cassano Marketplace seller account
+                and manage your business.
+            </p>
+
+            <!-- LOGIN FORM -->
+            <form id="loginForm">
+
+                <!-- EMAIL / PHONE -->
+                <div class="form-group">
+
+                    <label for="loginIdentifier">
+                        Email or Phone
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="text"
+                            id="loginIdentifier"
+                            placeholder="Enter your email or phone"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            class="password-input"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="passwordToggle"
+                            aria-label="Show password"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- OPTIONS -->
+                <div class="form-options">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                        >
+
+                        <span>Remember me</span>
+
+                    </label>
+
+                    <a
+                        href="#"
+                        class="forgot"
+                        id="forgotPassword"
+                    >
+                        Forgot password?
+                    </a>
+
+                </div>
+
+                <!-- LOGIN -->
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton"
+                >
+
+                    <span class="loading"></span>
+
+                    <span class="button-text">
+                        SIGN IN
+                    </span>
+
+                </button>
+
+                <!-- MESSAGE -->
+                <div
+                    id="message"
+                    class="message"
+                ></div>
+
+            </form>
+
+            <!-- DIVIDER -->
+            <div class="divider">
+                <span>Seller Account</span>
+            </div>
+
+            <!-- REGISTER -->
+            <p class="register-text">
+                Don't have a seller account?
+                <a
+                    href="seller-register.html"
+                    class="register-link"
+                >
+                    Register as a Seller
+                </a>
+            </p>
+
+            <!-- BACK -->
+            <button
+                type="button"
+                class="back-button"
+                onclick="window.location.href='seller.html'"
+            >
+                ← Back to Seller Area
+            </button>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="login-footer">
+            © 2026 <span>Cassano Marketplace</span>.
+            All rights reserved.
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   THEME SYSTEM
+   Reads the SAME theme used by Marketplace
+   ========================================================= */
+
+(function () {
+
+    function applySavedTheme() {
+
+        const savedTheme =
+            localStorage.getItem("cassanoTheme") || "dark";
+
+        document.body.classList.remove(
+            "light",
+            "blue"
+        );
+
+        if (savedTheme === "light") {
+            document.body.classList.add("light");
+        }
+
+        if (savedTheme === "blue") {
+            document.body.classList.add("blue");
+        }
+    }
+
+    applySavedTheme();
+
+    /*
+       If theme changes in another tab/window,
+       update this login page automatically.
+    */
+
+    window.addEventListener(
+        "storage",
+        function (event) {
+
+            if (event.key === "cassanoTheme") {
+
+                applySavedTheme();
+
+            }
+
+        }
+    );
+
+})();
+
+
+/* =========================================================
+   PASSWORD SHOW / HIDE
+   ========================================================= */
+
+const passwordInput =
+    document.getElementById("loginPassword");
+
+const passwordToggle =
+    document.getElementById("passwordToggle");
+
+passwordToggle.addEventListener(
+    "click",
+    function () {
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+
+            passwordToggle.textContent = "🙈";
+
+            passwordToggle.setAttribute(
+                "aria-label",
+                "Hide password"
+            );
+
+        } else {
+
+            passwordInput.type = "password";
+
+            passwordToggle.textContent = "👁";
+
+            passwordToggle.setAttribute(
+                "aria-label",
+                "Show password"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   REMEMBER ME
+   ========================================================= */
+
+const identifierInput =
+    document.getElementById("loginIdentifier");
+
+const rememberMe =
+    document.getElementById("rememberMe");
+
+const savedIdentifier =
+    localStorage.getItem("cassanoSellerRemembered");
+
+if (savedIdentifier) {
+
+    identifierInput.value =
+        savedIdentifier;
+
+    rememberMe.checked = true;
+
+}
+
+
+/* =========================================================
+   MESSAGE FUNCTION
+   ========================================================= */
+
+function showMessage(text, type) {
+
+    const message =
+        document.getElementById("message");
+
+    message.textContent = text;
+
+    message.className =
+        "message " + type;
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+            const identifier =
+                identifierInput.value.trim();
+
+            const password =
+                passwordInput.value.trim();
+
+            if (!identifier || !password) {
+
+                showMessage(
+                    "Please enter your email/phone and password.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /*
+               Prototype seller authentication.
+
+               Registration status is checked from the
+               seller registration page.
+            */
+
+            const registered =
+                localStorage.getItem(
+                    "cassanoSellerRegistered"
+                );
+
+
+            /*
+               If there is no registered seller yet,
+               send them to registration.
+            */
+
+            if (registered !== "true") {
+
+                showMessage(
+                    "No seller account has been registered yet. Please register as a seller first.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /* Remember seller identifier */
+
+            if (rememberMe.checked) {
+
+                localStorage.setItem(
+                    "cassanoSellerRemembered",
+                    identifier
+                );
+
+            } else {
+
+                localStorage.removeItem(
+                    "cassanoSellerRemembered"
+                );
+
+            }
+
+
+            /* Button loading */
+
+            const loginButton =
+                document.getElementById(
+                    "loginButton"
+                );
+
+            const buttonText =
+                loginButton.querySelector(
+                    ".button-text"
+                );
+
+            loginButton.disabled = true;
+
+            loginButton.classList.add(
+                "loading-active"
+            );
+
+            buttonText.textContent =
+                "SIGNING IN...";
+
+
+            /*
+               Prototype login.
+
+               Later this exact point will connect
+               to the real backend authentication.
+            */
+
+            setTimeout(function () {
+
+                localStorage.setItem(
+                    "cassanoSellerLoggedIn",
+                    "true"
+                );
+
+                showMessage(
+                    "Login successful. Opening Seller Dashboard...",
+                    "success"
+                );
+
+                buttonText.textContent =
+                    "SUCCESS";
+
+                setTimeout(function () {
+
+                    window.location.href =
+                        "seller-dashboard.html";
+
+                }, 600);
+
+            }, 500);
+
+        }
+    );
+
+
+/* =========================================================
+   FORGOT PASSWORD
+   ========================================================= */
+
+document
+    .getElementById("forgotPassword")
+    .addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+
+            showMessage(
+                "Password recovery will be connected to the seller account system.",
+                "error"
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   ENTER KEY SUPPORT
+   ========================================================= */
+
+identifierInput.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            passwordInput.focus();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

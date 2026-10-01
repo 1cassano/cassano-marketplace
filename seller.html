@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sell on Cassano Marketplace</title>
+
+<style>
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root {
+    --gold:#D4AF37;
+    --gold-light:#f3d77a;
+}
+
+body {
+    font-family:Arial, sans-serif;
+    background:#050505;
+    color:white;
+    min-height:100vh;
+    transition:
+        background .25s ease,
+        color .25s ease;
+}
+
+.container {
+    max-width:1100px;
+    margin:auto;
+    padding:25px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #222;
+    padding-bottom:20px;
+    transition:
+        background .25s ease,
+        border-color .25s ease;
+}
+
+.logo {
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo img {
+    width:45px;
+    height:45px;
+    object-fit:contain;
+}
+
+.logo strong {
+    display:block;
+}
+
+.logo span {
+    display:block;
+    color:var(--gold);
+    font-size:11px;
+    margin-top:4px;
+}
+
+.back {
+    color:#aaa;
+    text-decoration:none;
+    transition:.25s;
+}
+
+.back:hover {
+    color:var(--gold);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    margin-top:70px;
+    min-height:500px;
+    border:1px solid rgba(212,175,55,.3);
+    border-radius:25px;
+    padding:60px;
+    display:flex;
+    align-items:center;
+
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(212,175,55,.16),
+            transparent 35%
+        ),
+        #0c0c0c;
+
+    transition:
+        background .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+.hero-content {
+    max-width:700px;
+}
+
+.small {
+    color:var(--gold);
+    letter-spacing:4px;
+    font-size:12px;
+    margin-bottom:18px;
+}
+
+h1 {
+    font-size:clamp(40px,7vw,75px);
+    line-height:1;
+    margin-bottom:20px;
+}
+
+h1 span {
+    color:var(--gold);
+}
+
+p {
+    color:#999;
+    line-height:1.7;
+}
+
+.buttons {
+    display:flex;
+    gap:12px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}
+
+.btn {
+    padding:14px 25px;
+    border-radius:8px;
+    border:none;
+    font-weight:bold;
+    text-decoration:none;
+    display:inline-block;
+    transition:.25s;
+}
+
+.gold {
+    background:var(--gold);
+    color:#050505;
+}
+
+.gold:hover {
+    background:var(--gold-light);
+    transform:translateY(-2px);
+}
+
+.dark {
+    background:#171717;
+    border:1px solid #333;
+    color:white;
+}
+
+.dark:hover {
+    border-color:var(--gold);
+}
+
+.already {
+    margin-top:20px;
+    font-size:13px;
+    color:#888;
+}
+
+.already a {
+    color:var(--gold);
+    text-decoration:none;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features {
+    margin-top:35px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.feature {
+    padding:22px;
+    background:#111;
+    border:1px solid #252525;
+    border-radius:15px;
+
+    transition:
+        background .25s ease,
+        border-color .25s ease;
+}
+
+.feature h3 {
+    color:var(--gold);
+    margin-bottom:8px;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+
+body.light {
+    background:#f4f4f4;
+    color:#111111;
+}
+
+body.light header {
+    border-bottom-color:rgba(0,0,0,.12);
+}
+
+body.light .back {
+    color:#555555;
+}
+
+body.light .back:hover {
+    color:#111111;
+}
+
+body.light .hero {
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(212,175,55,.13),
+            transparent 35%
+        ),
+        #ffffff;
+
+    border-color:rgba(0,0,0,.12);
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.08);
+}
+
+body.light .hero p {
+    color:#666666;
+}
+
+body.light .already {
+    color:#666666;
+}
+
+body.light .dark {
+    background:#eeeeee;
+    border-color:#cccccc;
+    color:#111111;
+}
+
+body.light .dark:hover {
+    background:#e3e3e3;
+    border-color:var(--gold);
+}
+
+body.light .feature {
+    background:#ffffff;
+    border-color:#dddddd;
+}
+
+body.light .feature p {
+    color:#666666;
+}
+
+
+/* =========================================================
+   LUXURY BLUE MODE
+========================================================= */
+
+body.blue {
+    background:#07111f;
+    color:#ffffff;
+}
+
+body.blue header {
+    border-bottom-color:rgba(148,170,195,.16);
+}
+
+body.blue .back {
+    color:#aab8c5;
+}
+
+body.blue .back:hover {
+    color:#ffffff;
+}
+
+body.blue .hero {
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(212,175,55,.13),
+            transparent 35%
+        ),
+        #0a1626;
+
+    border-color:rgba(212,175,55,.30);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.35);
+}
+
+body.blue .hero p {
+    color:#aab8c5;
+}
+
+body.blue .already {
+    color:#aab8c5;
+}
+
+body.blue .dark {
+    background:#13283d;
+    border-color:#2b435b;
+    color:#ffffff;
+}
+
+body.blue .dark:hover {
+    border-color:var(--gold);
+}
+
+body.blue .feature {
+    background:#0d1b2a;
+    border-color:#20374d;
+}
+
+body.blue .feature p {
+    color:#aab8c5;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px) {
+
+    .container {
+        padding:18px;
+    }
+
+    header {
+        align-items:flex-start;
+        gap:20px;
+    }
+
+    .back {
+        font-size:13px;
+    }
+
+    .hero {
+        padding:35px 25px;
+        margin-top:35px;
+        min-height:450px;
+    }
+
+    .features {
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+    <div class="logo">
+
+        <img src="./ONLY C.png" alt="Cassano Marketplace Logo">
+
+        <div>
+            <strong>Cassano Marketplace</strong>
+            <span>SELLER AREA</span>
+        </div>
+
+    </div>
+
+    <a href="marketplace.html" class="back">
+        ← Back to Marketplace
+    </a>
+
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="small">
+            SELL ON CASSANO MARKETPLACE
+        </div>
+
+        <h1>
+            Grow your business.<br>
+            Reach <span>more customers.</span>
+        </h1>
+
+        <p>
+            Sell your products to customers across Tanzania
+            and eventually reach buyers worldwide through
+            Cassano Marketplace.
+        </p>
+
+
+        <div class="buttons">
+
+            <a href="login.html" class="btn gold">
+                SIGN IN
+            </a>
+
+            <a href="seller-register.html" class="btn dark">
+                REGISTER AS A SELLER
+            </a>
+
+        </div>
+
+
+        <div class="already">
+
+            Already have a seller account?
+
+            <a href="login.html">
+                Sign in here
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="features">
+
+    <div class="feature">
+
+        <h3>📦 Sell Products</h3>
+
+        <p>
+            Add products, prices, images and stock
+            through your Seller Dashboard.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <h3>📊 Track Sales</h3>
+
+        <p>
+            Monitor orders, sales and seller performance
+            from one dashboard.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <h3>🌍 Reach Customers</h3>
+
+        <p>
+            Connect with customers locally and,
+            as the marketplace expands, internationally.
+        </p>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- =======================================================
+     CASSANO THEME SYNC
+======================================================= -->
+
+<script>
+
+(function () {
+
+    function applySavedTheme() {
+
+        const savedTheme =
+            localStorage.getItem("cassanoTheme") || "dark";
+
+        document.body.classList.remove(
+            "light",
+            "blue"
+        );
+
+        if (savedTheme === "light") {
+            document.body.classList.add("light");
+        }
+
+        if (savedTheme === "blue") {
+            document.body.classList.add("blue");
+        }
+
+    }
+
+    applySavedTheme();
+
+
+    /*
+       If the theme is changed in another Cassano page
+       while this page is open, update automatically.
+    */
+
+    window.addEventListener(
+        "storage",
+        function (event) {
+
+            if (event.key === "cassanoTheme") {
+                applySavedTheme();
+            }
+
+        }
+    );
+
+})();
+
+</script>
+
+</body>
+</html>

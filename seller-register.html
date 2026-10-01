@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Seller Registration | Cassano</title>
+
+<style>
+
+/* =========================================================
+   CASSANO THEME SYSTEM
+========================================================= */
+
+:root {
+
+    --gold:#D4AF37;
+    --gold-light:#f3d77a;
+
+    --black:#050505;
+    --dark:#0c0c0c;
+    --dark2:#131313;
+    --card:#111;
+
+    --text:#ffffff;
+    --muted:#888;
+
+    --border:rgba(212,175,55,.3);
+    --input:#191919;
+    --input-border:#333;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body {
+
+    background:var(--black);
+
+    color:var(--text);
+
+    font-family:Arial,sans-serif;
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    padding:30px 15px;
+
+    transition:
+        background .3s ease,
+        color .3s ease;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container {
+
+    width:100%;
+
+    max-width:650px;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+
+    text-align:center;
+
+    margin-bottom:25px;
+}
+
+.logo img {
+
+    width:70px;
+
+    display:block;
+
+    margin:0 auto;
+}
+
+.logo h2 {
+
+    margin-top:8px;
+
+    color:var(--text);
+}
+
+.logo p {
+
+    color:var(--gold);
+
+    font-size:11px;
+
+    letter-spacing:2px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card {
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:30px;
+
+    transition:
+        background .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+}
+
+
+/* =========================================================
+   HEADINGS
+========================================================= */
+
+h1 {
+
+    font-size:30px;
+
+    margin-bottom:8px;
+
+    color:var(--text);
+}
+
+.subtitle {
+
+    color:var(--muted);
+
+    margin-bottom:25px;
+
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group {
+
+    margin-bottom:16px;
+}
+
+label {
+
+    display:block;
+
+    font-size:12px;
+
+    color:var(--muted);
+
+    margin-bottom:7px;
+
+    font-weight:600;
+}
+
+
+input,
+select {
+
+    width:100%;
+
+    padding:13px;
+
+    background:var(--input);
+
+    color:var(--text);
+
+    border:1px solid var(--input-border);
+
+    border-radius:8px;
+
+    outline:none;
+
+    transition:
+        background .3s ease,
+        color .3s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+input::placeholder {
+
+    color:#777;
+}
+
+input:focus,
+select:focus {
+
+    border-color:var(--gold);
+
+    box-shadow:
+        0 0 0 3px rgba(212,175,55,.07);
+}
+
+
+/* =========================================================
+   SELECT OPTIONS
+========================================================= */
+
+select option {
+
+    background:var(--input);
+
+    color:var(--text);
+}
+
+
+/* =========================================================
+   ROW
+========================================================= */
+
+.row {
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.btn {
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:var(--gold);
+
+    color:#050505;
+
+    font-weight:bold;
+
+    margin-top:10px;
+
+    cursor:pointer;
+
+    transition:
+        background .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.btn:hover {
+
+    background:var(--gold-light);
+
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(212,175,55,.16);
+}
+
+.btn:active {
+
+    transform:translateY(0);
+}
+
+
+/* =========================================================
+   NOTE
+========================================================= */
+
+.note {
+
+    color:#666;
+
+    font-size:11px;
+
+    line-height:1.6;
+
+    margin-top:18px;
+}
+
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+.links {
+
+    text-align:center;
+
+    margin-top:18px;
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+.links a {
+
+    color:var(--gold);
+
+    text-decoration:none;
+
+    transition:color .2s ease;
+}
+
+.links a:hover {
+
+    color:var(--gold-light);
+}
+
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+
+body.light {
+
+    --black:#f4f4f4;
+
+    --dark:#ffffff;
+
+    --dark2:#eeeeee;
+
+    --card:#ffffff;
+
+    --text:#111111;
+
+    --muted:#666666;
+
+    --border:rgba(0,0,0,.12);
+
+    --input:#ffffff;
+
+    --input-border:#ccc;
+
+    background:#f4f4f4;
+
+    color:#111111;
+}
+
+
+body.light .card {
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.10);
+}
+
+
+body.light input,
+body.light select {
+
+    background:#ffffff;
+
+    color:#111111;
+
+    border-color:#ccc;
+}
+
+
+body.light input::placeholder {
+
+    color:#888;
+}
+
+
+body.light select option {
+
+    background:#ffffff;
+
+    color:#111111;
+}
+
+
+body.light .note {
+
+    color:#777;
+}
+
+
+/* =========================================================
+   LUXURY BLUE MODE
+========================================================= */
+
+body.blue {
+
+    --black:#07111f;
+
+    --dark:#0a1626;
+
+    --dark2:#102033;
+
+    --card:#0d1b2a;
+
+    --text:#ffffff;
+
+    --muted:#aab8c5;
+
+    --border:rgba(212,175,55,.28);
+
+    --input:#102337;
+
+    --input-border:#2b435b;
+
+    background:#07111f;
+
+    color:#ffffff;
+}
+
+
+body.blue .card {
+
+    background:#0d1b2a;
+
+    border-color:rgba(212,175,55,.28);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.45);
+}
+
+
+body.blue input,
+body.blue select {
+
+    background:#102337;
+
+    border-color:#2b435b;
+
+    color:#ffffff;
+}
+
+
+body.blue input::placeholder {
+
+    color:#8393a2;
+}
+
+
+body.blue select option {
+
+    background:#102337;
+
+    color:#ffffff;
+}
+
+
+body.blue .note {
+
+    color:#718496;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:550px) {
+
+    .row {
+
+        grid-template-columns:1fr;
+    }
+
+    .card {
+
+        padding:24px 20px;
+    }
+
+    h1 {
+
+        font-size:26px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     LOGO
+===================================================== -->
+
+<div class="logo">
+
+    <img
+        src="./ONLY C.png"
+        alt="Cassano Marketplace"
+    >
+
+    <h2>
+        Cassano Marketplace
+    </h2>
+
+    <p>
+        SELLER REGISTRATION
+    </p>
+
+</div>
+
+
+<!-- =====================================================
+     REGISTRATION CARD
+===================================================== -->
+
+<div class="card">
+
+
+<h1>
+    Become a Seller
+</h1>
+
+
+<p class="subtitle">
+Create your seller profile and start building your business
+on Cassano Marketplace.
+</p>
+
+
+<!-- BUSINESS NAME -->
+
+<div class="form-group">
+
+<label>
+    BUSINESS NAME
+</label>
+
+<input
+    type="text"
+    id="businessName"
+    placeholder="Your business name"
+>
+
+</div>
+
+
+<!-- FULL NAME -->
+
+<div class="form-group">
+
+<label>
+    FULL NAME
+</label>
+
+<input
+    type="text"
+    id="fullName"
+    placeholder="Your full name"
+>
+
+</div>
+
+
+<!-- NIDA -->
+
+<div class="form-group">
+
+<label>
+    NIDA NUMBER
+</label>
+
+<input
+    type="text"
+    id="nida"
+    placeholder="Enter NIDA number"
+>
+
+</div>
+
+
+<!-- PHONE + EMAIL -->
+
+<div class="row">
+
+
+<div class="form-group">
+
+<label>
+    PHONE NUMBER
+</label>
+
+<input
+    type="tel"
+    id="phone"
+    placeholder="+255..."
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    EMAIL
+</label>
+
+<input
+    type="email"
+    id="email"
+    placeholder="business@email.com"
+>
+
+</div>
+
+</div>
+
+
+<!-- REGION + CATEGORY -->
+
+<div class="row">
+
+
+<div class="form-group">
+
+<label>
+    REGION
+</label>
+
+<select id="region">
+
+<option>Dar es Salaam</option>
+
+<option>Arusha</option>
+
+<option>Mwanza</option>
+
+<option>Dodoma</option>
+
+<option>Mbeya</option>
+
+<option>Other</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    BUSINESS CATEGORY
+</label>
+
+<select id="category">
+
+<option>Fashion</option>
+
+<option>Electronics</option>
+
+<option>Beauty</option>
+
+<option>Home</option>
+
+<option>Watches</option>
+
+<option>Perfumes</option>
+
+<option>Other</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<!-- PASSWORD -->
+
+<div class="form-group">
+
+<label>
+    PASSWORD
+</label>
+
+<input
+    type="password"
+    id="password"
+    placeholder="Create password"
+>
+
+</div>
+
+
+<!-- CREATE ACCOUNT -->
+
+<button
+    class="btn"
+    onclick="registerSeller()"
+>
+
+    CREATE SELLER ACCOUNT
+
+</button>
+
+
+<!-- NOTE -->
+
+<p class="note">
+
+By registering, you agree to provide accurate business
+information. Real NIDA verification, document verification,
+seller approval and payment onboarding will be connected
+through the backend later.
+
+</p>
+
+
+<!-- LINKS -->
+
+<div class="links">
+
+Already have an account?
+
+<a href="login.html">
+    Sign In
+</a>
+
+<br>
+<br>
+
+<a href="seller.html">
+    ← Back to Seller Area
+</a>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   THEME SYNC
+   Uses the SAME cassanoTheme as Marketplace
+========================================================= */
+
+(function () {
+
+    function applySavedTheme() {
+
+        const savedTheme =
+            localStorage.getItem("cassanoTheme") || "dark";
+
+
+        document.body.classList.remove(
+            "light",
+            "blue"
+        );
+
+
+        if (savedTheme === "light") {
+
+            document.body.classList.add("light");
+
+        }
+
+
+        if (savedTheme === "blue") {
+
+            document.body.classList.add("blue");
+
+        }
+
+    }
+
+
+    /* Apply theme when page opens */
+
+    applySavedTheme();
+
+
+    /*
+       Listen for theme changes from another
+       Cassano page/tab.
+    */
+
+    window.addEventListener(
+        "storage",
+        function(event) {
+
+            if (event.key === "cassanoTheme") {
+
+                applySavedTheme();
+
+            }
+
+        }
+    );
+
+})();
+
+
+/* =========================================================
+   SELLER REGISTRATION
+========================================================= */
+
+function registerSeller() {
+
+
+    const businessName =
+        document
+        .getElementById("businessName")
+        .value
+        .trim();
+
+
+    const fullName =
+        document
+        .getElementById("fullName")
+        .value
+        .trim();
+
+
+    const nida =
+        document
+        .getElementById("nida")
+        .value
+        .trim();
+
+
+    const phone =
+        document
+        .getElementById("phone")
+        .value
+        .trim();
+
+
+    const email =
+        document
+        .getElementById("email")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("password")
+        .value
+        .trim();
+
+
+    const region =
+        document
+        .getElementById("region")
+        .value;
+
+
+    const category =
+        document
+        .getElementById("category")
+        .value;
+
+
+    /* Required fields */
+
+    if (
+        !businessName ||
+        !fullName ||
+        !nida ||
+        !phone ||
+        !email ||
+        !password
+    ) {
+
+        alert(
+            "Please complete all required fields."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Save seller registration data.
+
+       Business name is already used by the
+       Seller Dashboard.
+    */
+
+    localStorage.setItem(
+        "cassanoSellerRegistered",
+        "true"
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerBusiness",
+        businessName
+    );
+
+
+    /*
+       Save additional seller information
+       for the Seller Profile section later.
+    */
+
+    localStorage.setItem(
+        "cassanoSellerFullName",
+        fullName
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerNida",
+        nida
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerPhone",
+        phone
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerEmail",
+        email
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerRegion",
+        region
+    );
+
+
+    localStorage.setItem(
+        "cassanoSellerCategory",
+        category
+    );
+
+
+    alert(
+        "Seller registration submitted successfully."
+    );
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
